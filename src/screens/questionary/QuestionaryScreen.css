@@ -1,0 +1,8 @@
+.questionary-screen {
+    background-image: url('/src/assets/images/background/mountain-forest_2.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
