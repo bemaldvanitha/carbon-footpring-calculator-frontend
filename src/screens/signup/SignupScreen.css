@@ -1,0 +1,59 @@
+.signup-screen {
+    background-image: url("/src/assets/images/background/signup-background-3.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-screen-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(42, 170, 138, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 15px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 800px;
+}
+
+.signup-screen-title {
+    font-family: 'Montserrat', serif;
+    font-weight: bold;
+    font-size: 34px;
+    margin: 10px 0;
+    color: #097969;
+}
+
+.signup-screen-description {
+    font-family: 'Montserrat', serif;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.signup-screen-body-quiz-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.signup-screen-body-quiz-container-text {
+    font-family: 'Montserrat', serif;
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.signup-screen-body-quiz-container-text-link {
+    font-family: 'Montserrat', serif;
+    font-size: 16px;
+    margin: 10px 0;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #097969;
+}

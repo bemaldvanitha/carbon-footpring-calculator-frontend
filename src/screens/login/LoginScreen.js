@@ -26,8 +26,6 @@ const LoginScreen = () => {
         const emailValidity = emailRegex.test(email);
         const passwordValidity = password.trim().length >= 5;
 
-        console.log(emailValidity, passwordValidity)
-
         setEmailError(false);
         setPasswordError(false);
 
