@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router";
 import { message } from "antd";
 
 import QuestionContainer from "../../components/quiz/QuestionContainer";
@@ -7,10 +8,12 @@ import InputQuestion from "../../components/quiz/InputQuestion";
 import CustomButton from "../../components/common/CustomButton";
 import { BODY_TYPES, SEX, DIET, SHOWER, HEATING, TRANSPORT, VEHICLE_TYPE, SOCIAL_ACTIVITY, AIR_TRAVEL,
     WASTE_BAG_SIZE, ENERGY_EFFICIENTLY, RECYCLE, COOKING_WITH } from "../../constants/constants";
+import { useCalculateMutation } from "../../slicers/calculatorSlice";
 
 import './QuestionaryScreen.css';
 
 const QuestionaryScreen = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         body_type: "overweight",
         sex: "male",
@@ -53,6 +56,8 @@ const QuestionaryScreen = () => {
         recycling_error: false,
         cooking_with_error: false
     });
+
+    const [calculate, { isLoading }] = useCalculateMutation();
 
     const handleChange = (field, value) => {
         setFormData((prevData) => ({
@@ -98,7 +103,7 @@ const QuestionaryScreen = () => {
     }
 
     const monthlyBillChangeHandler = (value) => {
-        handleChange('monthly_grocery_bill', value);
+        handleChange('monthly_grocery_bill', parseInt(value));
     }
 
     const airTravelChangeHandler = (value) => {
@@ -106,7 +111,7 @@ const QuestionaryScreen = () => {
     }
 
     const vehicleMonthlyDistanceChangeHandler = (value) => {
-        handleChange('vehicle_monthly_distance', value);
+        handleChange('vehicle_monthly_distance', parseInt(value));
     }
 
     const wasteBagSizeChangeHandler = (value) => {
@@ -114,19 +119,19 @@ const QuestionaryScreen = () => {
     }
 
     const wasteBagCountChangeHandler = (value) => {
-        handleChange('waste_bag_count', value);
+        handleChange('waste_bag_count', parseInt(value));
     }
 
     const tvDailyHoursChangeHandler = (value) => {
-        handleChange('tv_pc_daily_hour', value);
+        handleChange('tv_pc_daily_hour', parseInt(value));
     }
 
     const newClothsMonthlyChangeHandler = (value) => {
-        handleChange('new_cloths_monthly', value);
+        handleChange('new_cloths_monthly', parseInt(value));
     }
 
     const internetDailyHourChangeHandler = (value) => {
-        handleChange('internet_daily_hours', value);
+        handleChange('internet_daily_hours', parseInt(value));
     }
 
     const energyEfficiencyChangeHandler = (value) => {
@@ -210,7 +215,15 @@ const QuestionaryScreen = () => {
             });
             message.warning('Please fill missing fields!')
         }else {
+            try {
+                const res = await calculate(formData).unwrap();
+                const userId = res.data.user_id;
 
+                message.success(res?.message);
+                navigate(`/signup?user=${userId}`)
+            }catch (error){
+                message.error(error?.data?.message);
+            }
         }
     }
 
