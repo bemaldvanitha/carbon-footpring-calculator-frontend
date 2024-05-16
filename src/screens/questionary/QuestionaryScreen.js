@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import QuestionContainer from "../../components/quiz/QuestionContainer";
 import SingleChoiseQuestion from "../../components/quiz/SingleChoiseQuestion";
 import InputQuestion from "../../components/quiz/InputQuestion";
-import { BODY_TYPES, SEX, DIET, SHOWER, HEATING, TRANSPORT, VEHICLE_TYPE, SOCIAL_ACTIVITY, AIR_TRAVEL } from "../../constants/constants";
+import { BODY_TYPES, SEX, DIET, SHOWER, HEATING, TRANSPORT, VEHICLE_TYPE, SOCIAL_ACTIVITY, AIR_TRAVEL,
+    WASTE_BAG_SIZE } from "../../constants/constants";
 
 import './QuestionaryScreen.css';
 
@@ -106,6 +107,26 @@ const QuestionaryScreen = () => {
         handleChange('vehicle_monthly_distance', value);
     }
 
+    const wasteBagSizeChangeHandler = (value) => {
+        handleChange('waste_bag_size', value);
+    }
+
+    const wasteBagCountChangeHandler = (value) => {
+        handleChange('waste_bag_count', value);
+    }
+
+    const tvDailyHoursChangeHandler = (value) => {
+        handleChange('tv_pc_daily_hour', value);
+    }
+
+    const newClothsMonthlyChangeHandler = (value) => {
+        handleChange('new_cloths_monthly', value);
+    }
+
+    const internetDailyHourChangeHandler = (value) => {
+        handleChange('internet_daily_hours', value);
+    }
+
     return(
         <div className={'questionary-screen'}>
             <p>Answer these questions to calculate your carbon footprint</p>
@@ -165,6 +186,35 @@ const QuestionaryScreen = () => {
                                errorMessage={'Please Enter your vehicle monthly distance'}
                                placeholder={'Enter monthly your vehicle monthly distance'}/>
             </QuestionContainer>}
+            <QuestionContainer>
+                <SingleChoiseQuestion title={'12). Waste Bag Size'} value={formData.waste_bag_size}
+                                      isError={formDataError.waste_bag_size_error} onChangeValue={wasteBagSizeChangeHandler}
+                                      options={WASTE_BAG_SIZE} errorMessage={'Please select waste bag size'}/>
+            </QuestionContainer>
+            <QuestionContainer>
+                <InputQuestion title={'13). Waste bag count per week'} value={formData.waste_bag_count}
+                               onChangeValue={wasteBagCountChangeHandler} isError={formDataError.waste_bag_count_error}
+                               errorMessage={'Please Enter your waste bag count per week'}
+                               placeholder={'Enter your waste bag count per week'}/>
+            </QuestionContainer>
+            <QuestionContainer>
+                <InputQuestion title={'14). how many hours use Tv/Pc daily'} value={formData.tv_pc_daily_hour}
+                               onChangeValue={tvDailyHoursChangeHandler} isError={formDataError.tv_pc_daily_hour_error}
+                               errorMessage={'Please Enter your Tv/Pc daily hour count'}
+                               placeholder={'Enter your Tv/Pc daily hour count'}/>
+            </QuestionContainer>
+            <QuestionContainer>
+                <InputQuestion title={'15). Purchased new cloths per month'} value={formData.new_cloths_monthly}
+                               onChangeValue={newClothsMonthlyChangeHandler} isError={formDataError.new_cloths_monthly_error}
+                               errorMessage={'Please Enter purchased new cloths per month'}
+                               placeholder={'Enter purchased new cloths per month'}/>
+            </QuestionContainer>
+            <QuestionContainer>
+                <InputQuestion title={'16). How many hour do you use internet daily'} value={formData.internet_daily_hours}
+                               onChangeValue={internetDailyHourChangeHandler} isError={formDataError.internet_daily_hours_error}
+                               errorMessage={'Please Enter how many hour do you use internet'}
+                               placeholder={'How many hour do you use internet'}/>
+            </QuestionContainer>
         </div>
     )
 }

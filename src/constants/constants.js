@@ -40,6 +40,11 @@ import neverAir from '../assets/images/quiz/air-travel/neverAir.png';
 import oftenAir from '../assets/images/quiz/air-travel/oftenAir.png';
 import rarelyAir from '../assets/images/quiz/air-travel/rarelyAir.png';
 
+import wasteXl from '../assets/images/quiz/waste/wasteXl.png';
+import wasteLarge from '../assets/images/quiz/waste/wasteLarge.png';
+import wasteMedium from '../assets/images/quiz/waste/wasteMedium.png';
+import wasteSmall from '../assets/images/quiz/waste/wateSmall.png';
+
 export const BODY_TYPES = [
     { value: "overweight", title: 'Over Weight', image: overweight },
     { value: "obese", title: 'Obese', image: obesity },
@@ -98,4 +103,11 @@ export const AIR_TRAVEL = [
     { value: "rarely", title: 'Rarely', image: rarelyAir },
     { value: "never", title: 'Never', image: neverAir },
     { value: "very frequently", title: 'Very frequently', image: oftenAir },
+]
+
+export const WASTE_BAG_SIZE = [
+    { value: "large", title: 'Large', image: wasteLarge },
+    { value: "extra large", title: 'Extra large', image: wasteXl },
+    { value: "small", title: 'Small', image: wasteSmall },
+    { value: "medium", title: 'Medium', image: wasteMedium },
 ]
