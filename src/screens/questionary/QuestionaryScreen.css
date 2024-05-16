@@ -6,3 +6,32 @@
     min-height: 100vh;
 }
 
+.questionary-screen-header {
+    margin: 10px 0;
+}
+
+.questionary-screen-title {
+    font-family: 'Montserrat', serif;
+    font-weight: bolder;
+    font-size: 60px;
+    margin: 10px 0;
+    color: #240750;
+    text-align: center;
+}
+
+.questionary-screen-text {
+    font-family: 'Montserrat', serif;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 10px;
+    color: #240750;
+    text-align: center;
+}
+
+.questionary-screen-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+}

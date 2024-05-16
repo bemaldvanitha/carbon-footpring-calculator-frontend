@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { message } from "antd";
 
 import QuestionContainer from "../../components/quiz/QuestionContainer";
 import SingleChoiseQuestion from "../../components/quiz/SingleChoiseQuestion";
 import InputQuestion from "../../components/quiz/InputQuestion";
+import CustomButton from "../../components/common/CustomButton";
 import { BODY_TYPES, SEX, DIET, SHOWER, HEATING, TRANSPORT, VEHICLE_TYPE, SOCIAL_ACTIVITY, AIR_TRAVEL,
     WASTE_BAG_SIZE, ENERGY_EFFICIENTLY, RECYCLE, COOKING_WITH } from "../../constants/constants";
 
@@ -153,54 +155,125 @@ const QuestionaryScreen = () => {
         handleChange('cooking_with', currentCooking);
     }
 
+    const submitHandler = async () => {
+        setFormDataError({
+            body_type_error: false,
+            sex_error: false,
+            diet_error: false,
+            how_often_shower_error: false,
+            heating_energy_source_error: false,
+            transport_error: false,
+            vehicle_type_error: false,
+            social_activity_error: false,
+            monthly_grocery_bill_error: false,
+            frequency_of_travel_by_air_error: false,
+            vehicle_monthly_distance_error: false,
+            waste_bag_size_error: false,
+            waste_bag_count_error: false,
+            tv_pc_daily_hour_error: false,
+            new_cloths_monthly_error: false,
+            internet_daily_hours_error: false,
+            energy_efficiency_error: false,
+            recycling_error: false,
+            cooking_with_error: false
+        });
+
+        const groceryBillValidity = formData.monthly_grocery_bill <= 0
+        const driveDistanceValidity = formData.transport === 'private' && formData.vehicle_monthly_distance <= 0
+        const wasteBagValidity = formData.waste_bag_count <= 0;
+        const tvHourValidity = formData.tv_pc_daily_hour <= 0;
+        const clothValidity = formData.new_cloths_monthly <= 0;
+        const internetHourValidity = formData.internet_daily_hours <= 0;
+        const vehicleTypeValidity = formData.transport === 'private' && formData.vehicle_type === ''
+
+        if(groceryBillValidity || driveDistanceValidity || wasteBagValidity ||tvHourValidity ||clothValidity || internetHourValidity){
+            setFormDataError({
+                body_type_error: false,
+                sex_error: false,
+                diet_error: false,
+                how_often_shower_error: false,
+                heating_energy_source_error: false,
+                transport_error: false,
+                vehicle_type_error: vehicleTypeValidity,
+                social_activity_error: false,
+                monthly_grocery_bill_error: groceryBillValidity,
+                frequency_of_travel_by_air_error: false,
+                vehicle_monthly_distance_error: driveDistanceValidity,
+                waste_bag_size_error: false,
+                waste_bag_count_error: wasteBagValidity,
+                tv_pc_daily_hour_error: tvHourValidity,
+                new_cloths_monthly_error: clothValidity,
+                internet_daily_hours_error: internetHourValidity,
+                energy_efficiency_error: false,
+                recycling_error: false,
+                cooking_with_error: false
+            });
+            message.warning('Please fill missing fields!')
+        }else {
+
+        }
+    }
+
     return(
         <div className={'questionary-screen'}>
-            <p>Answer these questions to calculate your carbon footprint</p>
+            <div className={'questionary-screen-header'}>
+                <p className={'questionary-screen-title'}>Carboon</p>
+                <p className={'questionary-screen-text'}>Answer these questions to calculate your carbon footprint</p>
+            </div>
             <QuestionContainer>
-                <SingleChoiseQuestion title={'1). Body Type'} value={formData.body_type} isError={formDataError.body_type_error}
-                    onChangeValue={bodyTypeChangeHandler} options={BODY_TYPES} errorMessage={'Please select your body type'}/>
+                <SingleChoiseQuestion title={'1). Select Your Body Type'} value={formData.body_type}
+                                      isError={formDataError.body_type_error}
+                                      onChangeValue={bodyTypeChangeHandler} options={BODY_TYPES}
+                                      errorMessage={'Please select your body type'}/>
             </QuestionContainer>
             <QuestionContainer>
-                <SingleChoiseQuestion title={'2). Sex'} value={formData.sex} isError={formDataError.sex_error}
-                                      onChangeValue={sexChangeHandler} options={SEX} errorMessage={'Please select your sex'}/>
+                <SingleChoiseQuestion title={'2). Select Your Gender'} value={formData.sex} isError={formDataError.sex_error}
+                                      onChangeValue={sexChangeHandler} options={SEX}
+                                      errorMessage={'Please select your sex'}/>
             </QuestionContainer>
             <QuestionContainer>
-                <SingleChoiseQuestion title={'3). Diet'} value={formData.diet} isError={formDataError.diet_error}
-                                      onChangeValue={dietChangeHandler} options={DIET} errorMessage={'Please select your diet'}/>
+                <SingleChoiseQuestion title={'3). Dietary Plan'} value={formData.diet} isError={formDataError.diet_error}
+                                      onChangeValue={dietChangeHandler} options={DIET}
+                                      errorMessage={'Please select your diet'}/>
             </QuestionContainer>
             <QuestionContainer>
-                <SingleChoiseQuestion title={'4). How Often Shower'} value={formData.how_often_shower}
+                <SingleChoiseQuestion title={'4). How Often Do You Shower'} value={formData.how_often_shower}
                                       isError={formDataError.how_often_shower_error} onChangeValue={showerChangeHandler}
                                       options={SHOWER} errorMessage={'Please select your how often shower'}/>
             </QuestionContainer>
             <QuestionContainer>
-                <SingleChoiseQuestion title={'5). Heating Energy Source'} value={formData.heating_energy_source}
-                                      isError={formDataError.heating_energy_source_error} onChangeValue={heatingChangeHandler}
+                <SingleChoiseQuestion title={'5). Heating Energy Source Of House'} value={formData.heating_energy_source}
+                                      isError={formDataError.heating_energy_source_error}
+                                      onChangeValue={heatingChangeHandler}
                                       options={HEATING} errorMessage={'Please select your heating energy source'}/>
             </QuestionContainer>
             <QuestionContainer>
-                <SingleChoiseQuestion title={'6). Transport Mode'} value={formData.transport}
+                <SingleChoiseQuestion title={'6). Transport Method To Work'} value={formData.transport}
                                       isError={formDataError.transport_error} onChangeValue={transportChangeHandler}
                                       options={TRANSPORT} errorMessage={'Please select your transport mode'}/>
             </QuestionContainer>
             {formData.transport === 'private' && <QuestionContainer>
                 <SingleChoiseQuestion title={'7). Vehicle Type'} value={formData.vehicle_type}
-                                      isError={formDataError.vehicle_type_error} onChangeValue={vehicleTypeChangeHandler}
+                                      isError={formDataError.vehicle_type_error}
+                                      onChangeValue={vehicleTypeChangeHandler}
                                       options={VEHICLE_TYPE} errorMessage={'Please select your vehicle type'}/>
             </QuestionContainer>}
             <QuestionContainer>
                 <SingleChoiseQuestion title={'8). Social Activity Level'} value={formData.social_activity}
-                                      isError={formDataError.social_activity_error} onChangeValue={socialActivityChangeHandler}
+                                      isError={formDataError.social_activity_error}
+                                      onChangeValue={socialActivityChangeHandler}
                                       options={SOCIAL_ACTIVITY} errorMessage={'Please select social activity level'}/>
             </QuestionContainer>
             <QuestionContainer>
-                <InputQuestion title={'9). Monthly Grocery bill'} value={formData.monthly_grocery_bill}
-                               onChangeValue={monthlyBillChangeHandler} isError={formDataError.monthly_grocery_bill_error}
+                <InputQuestion title={'9). Monthly Grocery Bill'} value={formData.monthly_grocery_bill}
+                               onChangeValue={monthlyBillChangeHandler}
+                               isError={formDataError.monthly_grocery_bill_error}
                                errorMessage={'Please Enter your monthly grocery bill amount'}
                                placeholder={'Enter monthly grocery bill amount'}/>
             </QuestionContainer>
             <QuestionContainer>
-                <SingleChoiseQuestion title={'10). Frequency of Traveling by Air'} value={formData.frequency_of_travel_by_air}
+                <SingleChoiseQuestion title={'10). Frequency of Traveling by Air'}
+                                      value={formData.frequency_of_travel_by_air}
                                       isError={formDataError.frequency_of_travel_by_air_error}
                                       onChangeValue={airTravelChangeHandler} options={AIR_TRAVEL}
                                       errorMessage={'Please select air travel frequency'}/>
@@ -214,7 +287,8 @@ const QuestionaryScreen = () => {
             </QuestionContainer>}
             <QuestionContainer>
                 <SingleChoiseQuestion title={'12). Waste Bag Size'} value={formData.waste_bag_size}
-                                      isError={formDataError.waste_bag_size_error} onChangeValue={wasteBagSizeChangeHandler}
+                                      isError={formDataError.waste_bag_size_error}
+                                      onChangeValue={wasteBagSizeChangeHandler}
                                       options={WASTE_BAG_SIZE} errorMessage={'Please select waste bag size'}/>
             </QuestionContainer>
             <QuestionContainer>
@@ -231,31 +305,42 @@ const QuestionaryScreen = () => {
             </QuestionContainer>
             <QuestionContainer>
                 <InputQuestion title={'15). Purchased new cloths per month'} value={formData.new_cloths_monthly}
-                               onChangeValue={newClothsMonthlyChangeHandler} isError={formDataError.new_cloths_monthly_error}
+                               onChangeValue={newClothsMonthlyChangeHandler}
+                               isError={formDataError.new_cloths_monthly_error}
                                errorMessage={'Please Enter purchased new cloths per month'}
                                placeholder={'Enter purchased new cloths per month'}/>
             </QuestionContainer>
             <QuestionContainer>
-                <InputQuestion title={'16). How many hour do you use internet daily'} value={formData.internet_daily_hours}
-                               onChangeValue={internetDailyHourChangeHandler} isError={formDataError.internet_daily_hours_error}
+                <InputQuestion title={'16). How many hour do you use internet daily'}
+                               value={formData.internet_daily_hours}
+                               onChangeValue={internetDailyHourChangeHandler}
+                               isError={formDataError.internet_daily_hours_error}
                                errorMessage={'Please Enter how many hour do you use internet'}
                                placeholder={'How many hour do you use internet'}/>
             </QuestionContainer>
             <QuestionContainer>
                 <SingleChoiseQuestion title={'17). Energy efficiency'} value={formData.energy_efficiency}
-                                      isError={formDataError.energy_efficiency_error} onChangeValue={energyEfficiencyChangeHandler}
-                                      options={ENERGY_EFFICIENTLY} errorMessage={'Please select energy efficiency rate'}/>
+                                      isError={formDataError.energy_efficiency_error}
+                                      onChangeValue={energyEfficiencyChangeHandler}
+                                      options={ENERGY_EFFICIENTLY}
+                                      errorMessage={'Please select energy efficiency rate'}/>
             </QuestionContainer>
             <QuestionContainer>
-                <SingleChoiseQuestion title={'18). Recycling'} value={formData.recycling}
+                <SingleChoiseQuestion title={'18). Recycling Materials'} value={formData.recycling}
                                       isError={formDataError.recycling_error} onChangeValue={recyclingChangeHandler}
-                                      options={RECYCLE} errorMessage={'Please select recycle materials'} isMultiple={true}/>
+                                      options={RECYCLE} errorMessage={'Please select recycle materials'}
+                                      isMultiple={true}/>
             </QuestionContainer>
             <QuestionContainer>
-                <SingleChoiseQuestion title={'19). Cooking_With'} value={formData.cooking_with}
+                <SingleChoiseQuestion title={'19). Cooking Methods'} value={formData.cooking_with}
                                       isError={formDataError.cooking_with_error} onChangeValue={cookingChangeHandler}
-                                      options={COOKING_WITH} errorMessage={'Please select cooking method'} isMultiple={true}/>
+                                      options={COOKING_WITH} errorMessage={'Please select cooking method'}
+                                      isMultiple={true}/>
             </QuestionContainer>
+            <div className={'questionary-screen-button-container'}>
+                <CustomButton title={'Calculate your carbon credit'} onClick={submitHandler} fontColor={'#f0f0f0'}
+                              bgColor={'#41B06E'}/>
+            </div>
         </div>
     )
 }
