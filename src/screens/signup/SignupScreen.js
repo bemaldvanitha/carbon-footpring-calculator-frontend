@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import { message } from "antd";
 
 import CustomInput from "../../components/common/CustomInput";
 import CustomButton from "../../components/common/CustomButton";
+import { useSignupMutation } from "../../slicers/AuthSlice";
 
 import './SignupScreen.css';
 
 const SignupScreen = () => {
     const navigate = useNavigate();
+    const { search } = useLocation();
+    const params = new URLSearchParams(search);
+    const user = params.get('user');
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,6 +24,8 @@ const SignupScreen = () => {
     const [passwordError, setPasswordError] = useState(false);
     const [phoneNumberError, setPhoneNumberError] = useState(false);
     const [fullNameError, setFullNameError] = useState(false);
+
+    const [signup, { isLoading }] = useSignupMutation();
 
     const emailChangeHandler = (e) => {
         setEmail(e.target.value);
@@ -39,7 +47,7 @@ const SignupScreen = () => {
         setFullName(e.target.value);
     }
 
-    const signupHandler = () => {
+    const signupHandler = async () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const emailValidity = emailRegex.test(email);
         const passwordValidity = password.trim().length >= 5 && password === confirmPassword;
@@ -52,7 +60,19 @@ const SignupScreen = () => {
         setPhoneNumberError(false);
 
         if(emailValidity && passwordValidity && fullNameValidity && phoneNumberValidity){
-
+            try {
+                const res = await signup({
+                    email: email,
+                    password: password,
+                    full_name: fullName,
+                    phone_number: phoneNumber,
+                    user_type: "User",
+                    temporary_user_id: user
+                }).unwrap();
+                message.success(res?.message);
+            }catch (err){
+                message.error(err?.data?.message);
+            }
         }else {
             setEmailError(!emailValidity);
             setFullNameError(!fullNameValidity);
