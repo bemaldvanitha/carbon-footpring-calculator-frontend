@@ -1,0 +1,16 @@
+.login-screen-background {
+    background: radial-gradient(circle at top left, #E0FBE2, #C3FF93);
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 100%, 0 90%);
+    height: 100vh;
+    position: relative;
+    z-index: -100;
+}
+
+.login-screen-background-shape-divider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}

@@ -13,7 +13,7 @@ const HomeScreen = () => {
     }
 
     const navigateToLoginHandler = () => {
-
+        navigate('/login')
     }
 
     return(
