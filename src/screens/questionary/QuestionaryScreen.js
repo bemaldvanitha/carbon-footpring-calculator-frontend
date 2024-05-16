@@ -4,7 +4,7 @@ import QuestionContainer from "../../components/quiz/QuestionContainer";
 import SingleChoiseQuestion from "../../components/quiz/SingleChoiseQuestion";
 import InputQuestion from "../../components/quiz/InputQuestion";
 import { BODY_TYPES, SEX, DIET, SHOWER, HEATING, TRANSPORT, VEHICLE_TYPE, SOCIAL_ACTIVITY, AIR_TRAVEL,
-    WASTE_BAG_SIZE } from "../../constants/constants";
+    WASTE_BAG_SIZE, ENERGY_EFFICIENTLY, RECYCLE, COOKING_WITH } from "../../constants/constants";
 
 import './QuestionaryScreen.css';
 
@@ -127,6 +127,32 @@ const QuestionaryScreen = () => {
         handleChange('internet_daily_hours', value);
     }
 
+    const energyEfficiencyChangeHandler = (value) => {
+        handleChange('energy_efficiency', value);
+    }
+
+    const recyclingChangeHandler = (value) => {
+        let currentRecycling = formData.recycling;
+        let recyclingIdx = currentRecycling.findIndex(recycle => recycle === value);
+        if(recyclingIdx === -1){
+            currentRecycling.push(value);
+        }else{
+            currentRecycling.splice(recyclingIdx, 1);
+        }
+        handleChange('recycling', currentRecycling);
+    }
+
+    const cookingChangeHandler = (value) => {
+        let currentCooking = formData.cooking_with;
+        let cookingIdx = currentCooking.findIndex(cooking => cooking === value);
+        if(cookingIdx === -1){
+            currentCooking.push(value);
+        }else{
+            currentCooking.splice(cookingIdx, 1);
+        }
+        handleChange('cooking_with', currentCooking);
+    }
+
     return(
         <div className={'questionary-screen'}>
             <p>Answer these questions to calculate your carbon footprint</p>
@@ -214,6 +240,21 @@ const QuestionaryScreen = () => {
                                onChangeValue={internetDailyHourChangeHandler} isError={formDataError.internet_daily_hours_error}
                                errorMessage={'Please Enter how many hour do you use internet'}
                                placeholder={'How many hour do you use internet'}/>
+            </QuestionContainer>
+            <QuestionContainer>
+                <SingleChoiseQuestion title={'17). Energy efficiency'} value={formData.energy_efficiency}
+                                      isError={formDataError.energy_efficiency_error} onChangeValue={energyEfficiencyChangeHandler}
+                                      options={ENERGY_EFFICIENTLY} errorMessage={'Please select energy efficiency rate'}/>
+            </QuestionContainer>
+            <QuestionContainer>
+                <SingleChoiseQuestion title={'18). Recycling'} value={formData.recycling}
+                                      isError={formDataError.recycling_error} onChangeValue={recyclingChangeHandler}
+                                      options={RECYCLE} errorMessage={'Please select recycle materials'} isMultiple={true}/>
+            </QuestionContainer>
+            <QuestionContainer>
+                <SingleChoiseQuestion title={'19). Cooking_With'} value={formData.cooking_with}
+                                      isError={formDataError.cooking_with_error} onChangeValue={cookingChangeHandler}
+                                      options={COOKING_WITH} errorMessage={'Please select cooking method'} isMultiple={true}/>
             </QuestionContainer>
         </div>
     )

@@ -45,6 +45,21 @@ import wasteLarge from '../assets/images/quiz/waste/wasteLarge.png';
 import wasteMedium from '../assets/images/quiz/waste/wasteMedium.png';
 import wasteSmall from '../assets/images/quiz/waste/wateSmall.png';
 
+import energySave from '../assets/images/quiz/energy-efficiency/enegySave.png';
+import energySometime from '../assets/images/quiz/energy-efficiency/enerySometime.png';
+import energyWaste from '../assets/images/quiz/energy-efficiency/energyWaste.png';
+
+import glassRecycle from '../assets/images/quiz/recyle/glassRecyle.png';
+import metalRecycle from '../assets/images/quiz/recyle/metalRecycle.png';
+import plasticRecycle from '../assets/images/quiz/recyle/plasticRecycle.png';
+import paperRecycle from '../assets/images/quiz/recyle/paperRecycle.png';
+
+import airfryer from '../assets/images/quiz/cooking-method/airfryer.png';
+import grilling from '../assets/images/quiz/cooking-method/grilling.png';
+import oven from '../assets/images/quiz/cooking-method/oven.png';
+import stove from '../assets/images/quiz/cooking-method/stove.png';
+import microwave from '../assets/images/quiz/cooking-method/microwave.png';
+
 export const BODY_TYPES = [
     { value: "overweight", title: 'Over Weight', image: overweight },
     { value: "obese", title: 'Obese', image: obesity },
@@ -110,4 +125,25 @@ export const WASTE_BAG_SIZE = [
     { value: "extra large", title: 'Extra large', image: wasteXl },
     { value: "small", title: 'Small', image: wasteSmall },
     { value: "medium", title: 'Medium', image: wasteMedium },
+]
+
+export const ENERGY_EFFICIENTLY = [
+    { value: "Yes", title: 'Yes', image: energySave },
+    { value: "No", title: 'No', image: energyWaste },
+    { value: "Sometimes", title: 'Sometimes', image: energySometime },
+]
+
+export const RECYCLE = [
+    { value: "Glass", title: 'Glass', image: glassRecycle },
+    { value: "Metal", title: 'Metal', image: metalRecycle },
+    { value: "Paper", title: 'Paper', image: paperRecycle },
+    { value: "Plastic", title: 'Plastic', image: plasticRecycle },
+]
+
+export const COOKING_WITH = [
+    { value: "Grill", title: 'Grill', image: grilling },
+    { value: "Airfryer", title: 'Airfryer', image: airfryer },
+    { value: "Microwave", title: 'Microwave', image: microwave },
+    { value: "Stove", title: 'Stove', image: stove },
+    { value: "Oven", title: 'Oven', image: oven },
 ]
