@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 import QuestionContainer from "../../components/quiz/QuestionContainer";
 import SingleChoiseQuestion from "../../components/quiz/SingleChoiseQuestion";
-import { BODY_TYPES, SEX, DIET, SHOWER, HEATING, TRANSPORT, VEHICLE_TYPE, SOCIAL_ACTIVITY } from "../../constants/constants";
+import InputQuestion from "../../components/quiz/InputQuestion";
+import { BODY_TYPES, SEX, DIET, SHOWER, HEATING, TRANSPORT, VEHICLE_TYPE, SOCIAL_ACTIVITY, AIR_TRAVEL } from "../../constants/constants";
 
 import './QuestionaryScreen.css';
 
@@ -81,6 +82,7 @@ const QuestionaryScreen = () => {
         handleChange('transport', value);
         if(value !== 'private'){
             handleChange('vehicle_type', 'empty');
+            handleChange('vehicle_monthly_distance', 0);
         }
     }
 
@@ -90,6 +92,18 @@ const QuestionaryScreen = () => {
 
     const socialActivityChangeHandler = (value) => {
         handleChange('social_activity', value);
+    }
+
+    const monthlyBillChangeHandler = (value) => {
+        handleChange('monthly_grocery_bill', value);
+    }
+
+    const airTravelChangeHandler = (value) => {
+        handleChange('frequency_of_travel_by_air', value);
+    }
+
+    const vehicleMonthlyDistanceChangeHandler = (value) => {
+        handleChange('vehicle_monthly_distance', value);
     }
 
     return(
@@ -132,6 +146,25 @@ const QuestionaryScreen = () => {
                                       isError={formDataError.social_activity_error} onChangeValue={socialActivityChangeHandler}
                                       options={SOCIAL_ACTIVITY} errorMessage={'Please select social activity level'}/>
             </QuestionContainer>
+            <QuestionContainer>
+                <InputQuestion title={'9). Monthly Grocery bill'} value={formData.monthly_grocery_bill}
+                               onChangeValue={monthlyBillChangeHandler} isError={formDataError.monthly_grocery_bill_error}
+                               errorMessage={'Please Enter your monthly grocery bill amount'}
+                               placeholder={'Enter monthly grocery bill amount'}/>
+            </QuestionContainer>
+            <QuestionContainer>
+                <SingleChoiseQuestion title={'10). Frequency of Traveling by Air'} value={formData.frequency_of_travel_by_air}
+                                      isError={formDataError.frequency_of_travel_by_air_error}
+                                      onChangeValue={airTravelChangeHandler} options={AIR_TRAVEL}
+                                      errorMessage={'Please select air travel frequency'}/>
+            </QuestionContainer>
+            {formData.transport === 'private' && <QuestionContainer>
+                <InputQuestion title={'11). Vehicle Monthly Distance'} value={formData.vehicle_monthly_distance}
+                               onChangeValue={vehicleMonthlyDistanceChangeHandler}
+                               isError={formDataError.vehicle_monthly_distance_error}
+                               errorMessage={'Please Enter your vehicle monthly distance'}
+                               placeholder={'Enter monthly your vehicle monthly distance'}/>
+            </QuestionContainer>}
         </div>
     )
 }

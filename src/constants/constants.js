@@ -35,6 +35,11 @@ import neverSocial from '../assets/images/quiz/social-activity/neverSocial.png';
 import sometimesSocial from '../assets/images/quiz/social-activity/sometimesSocial.png';
 import oftenSocial from '../assets/images/quiz/social-activity/oftenSocial.png';
 
+import frquentlyAir from '../assets/images/quiz/air-travel/frquentlyAir.png';
+import neverAir from '../assets/images/quiz/air-travel/neverAir.png';
+import oftenAir from '../assets/images/quiz/air-travel/oftenAir.png';
+import rarelyAir from '../assets/images/quiz/air-travel/rarelyAir.png';
+
 export const BODY_TYPES = [
     { value: "overweight", title: 'Over Weight', image: overweight },
     { value: "obese", title: 'Obese', image: obesity },
@@ -86,4 +91,11 @@ export const SOCIAL_ACTIVITY = [
     { value: "often", title: 'Often', image: oftenSocial },
     { value: "never", title: 'Never', image: neverSocial },
     { value: "sometimes", title: 'Sometimes', image: sometimesSocial },
+]
+
+export const AIR_TRAVEL = [
+    { value: "frequently", title: 'Frequently', image: frquentlyAir },
+    { value: "rarely", title: 'Rarely', image: rarelyAir },
+    { value: "never", title: 'Never', image: neverAir },
+    { value: "very frequently", title: 'Very frequently', image: oftenAir },
 ]
