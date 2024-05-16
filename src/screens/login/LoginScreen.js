@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router";
+import { message } from 'antd';
 
 import CustomButton from "../../components/common/CustomButton";
 import CustomInput from "../../components/common/CustomInput";
+import { useLoginMutation } from "../../slicers/AuthSlice";
 
 import './LoginScreen.css';
 
@@ -13,6 +15,8 @@ const LoginScreen = () => {
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
 
+    const [login, { isLoading }] = useLoginMutation();
+
     const emailChangeHandler = (e) => {
         setEmail(e.target.value);
     }
@@ -21,7 +25,7 @@ const LoginScreen = () => {
         setPassword(e.target.value);
     }
 
-    const loginHandler = () => {
+    const loginHandler = async () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const emailValidity = emailRegex.test(email);
         const passwordValidity = password.trim().length >= 5;
@@ -30,7 +34,12 @@ const LoginScreen = () => {
         setPasswordError(false);
 
         if(emailValidity && passwordValidity){
-
+            try {
+                const res = await login({ email: email, password: password }).unwrap();
+                message.success(res?.message);
+            }catch (err){
+                message.error(err?.data?.message);
+            }
         }else {
             setEmailError(!emailValidity);
             setPasswordError(!passwordValidity);

@@ -57,3 +57,10 @@
     cursor: pointer;
     color: #097969;
 }
+
+
+@media (max-width: 800px) {
+    .signup-screen-container {
+        width: 90%;
+    }
+}
