@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import QuestionContainer from "../../components/quiz/QuestionContainer";
 import SingleChoiseQuestion from "../../components/quiz/SingleChoiseQuestion";
-import { BODY_TYPES, SEX, DIET, SHOWER, HEATING, TRANSPORT } from "../../constants/constants";
+import { BODY_TYPES, SEX, DIET, SHOWER, HEATING, TRANSPORT, VEHICLE_TYPE, SOCIAL_ACTIVITY } from "../../constants/constants";
 
 import './QuestionaryScreen.css';
 
@@ -14,7 +14,7 @@ const QuestionaryScreen = () => {
         how_often_shower: "daily",
         heating_energy_source: "coal",
         transport: "public",
-        vehicle_type: "petrol",
+        vehicle_type: "empty",
         social_activity: "often",
         monthly_grocery_bill: 0,
         frequency_of_travel_by_air: "frequently",
@@ -79,6 +79,17 @@ const QuestionaryScreen = () => {
 
     const transportChangeHandler = (value) => {
         handleChange('transport', value);
+        if(value !== 'private'){
+            handleChange('vehicle_type', 'empty');
+        }
+    }
+
+    const vehicleTypeChangeHandler = (value) => {
+        handleChange('vehicle_type', value);
+    }
+
+    const socialActivityChangeHandler = (value) => {
+        handleChange('social_activity', value);
     }
 
     return(
@@ -111,7 +122,16 @@ const QuestionaryScreen = () => {
                                       isError={formDataError.transport_error} onChangeValue={transportChangeHandler}
                                       options={TRANSPORT} errorMessage={'Please select your transport mode'}/>
             </QuestionContainer>
-
+            {formData.transport === 'private' && <QuestionContainer>
+                <SingleChoiseQuestion title={'7). Vehicle Type'} value={formData.vehicle_type}
+                                      isError={formDataError.vehicle_type_error} onChangeValue={vehicleTypeChangeHandler}
+                                      options={VEHICLE_TYPE} errorMessage={'Please select your vehicle type'}/>
+            </QuestionContainer>}
+            <QuestionContainer>
+                <SingleChoiseQuestion title={'8). Social Activity Level'} value={formData.social_activity}
+                                      isError={formDataError.social_activity_error} onChangeValue={socialActivityChangeHandler}
+                                      options={SOCIAL_ACTIVITY} errorMessage={'Please select social activity level'}/>
+            </QuestionContainer>
         </div>
     )
 }

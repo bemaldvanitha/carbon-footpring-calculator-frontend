@@ -25,6 +25,16 @@ import bus from '../assets/images/quiz/transport/bus.png';
 import walking from '../assets/images/quiz/transport/walking.png';
 import personalCar from '../assets/images/quiz/transport/personalCar.png';
 
+import dieselCar from '../assets/images/quiz/vehicle-type/dieselCar.png';
+import electricCar from '../assets/images/quiz/vehicle-type/electricCar.png';
+import hybridCar from '../assets/images/quiz/vehicle-type/hybridCar.png';
+import lpgCar from '../assets/images/quiz/vehicle-type/lpgCar.png';
+import petrolCar from '../assets/images/quiz/vehicle-type/petrolCar.png';
+
+import neverSocial from '../assets/images/quiz/social-activity/neverSocial.png';
+import sometimesSocial from '../assets/images/quiz/social-activity/sometimesSocial.png';
+import oftenSocial from '../assets/images/quiz/social-activity/oftenSocial.png';
+
 export const BODY_TYPES = [
     { value: "overweight", title: 'Over Weight', image: overweight },
     { value: "obese", title: 'Obese', image: obesity },
@@ -62,4 +72,18 @@ export const TRANSPORT = [
     { value: "public", title: 'Public', image: bus },
     { value: "walk/bicycle", title: 'Walk/Bicycle', image: walking },
     { value: "private", title: 'Private', image: personalCar },
+]
+
+export const VEHICLE_TYPE = [
+    { value: "petrol", title: 'Petrol car', image: petrolCar },
+    { value: "diesel", title: 'Diesel car', image: dieselCar },
+    { value: "hybrid", title: 'Hybrid car', image: hybridCar },
+    { value: "lpg", title: 'Lpg car', image: lpgCar },
+    { value: "electric", title: 'Electric car', image: electricCar },
+]
+
+export const SOCIAL_ACTIVITY = [
+    { value: "often", title: 'Often', image: oftenSocial },
+    { value: "never", title: 'Never', image: neverSocial },
+    { value: "sometimes", title: 'Sometimes', image: sometimesSocial },
 ]
