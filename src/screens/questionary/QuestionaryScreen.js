@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import QuestionContainer from "../../components/quiz/QuestionContainer";
 import SingleChoiseQuestion from "../../components/quiz/SingleChoiseQuestion";
-import { BODY_TYPES, SEX, DIET } from "../../constants/constants";
+import { BODY_TYPES, SEX, DIET, SHOWER, HEATING, TRANSPORT } from "../../constants/constants";
 
 import './QuestionaryScreen.css';
 
@@ -69,6 +69,18 @@ const QuestionaryScreen = () => {
         handleChange('diet', value);
     }
 
+    const showerChangeHandler = (value) => {
+        handleChange('how_often_shower', value);
+    }
+
+    const heatingChangeHandler = (value) => {
+        handleChange('heating_energy_source', value);
+    }
+
+    const transportChangeHandler = (value) => {
+        handleChange('transport', value);
+    }
+
     return(
         <div className={'questionary-screen'}>
             <p>Answer these questions to calculate your carbon footprint</p>
@@ -84,6 +96,22 @@ const QuestionaryScreen = () => {
                 <SingleChoiseQuestion title={'3). Diet'} value={formData.diet} isError={formDataError.diet_error}
                                       onChangeValue={dietChangeHandler} options={DIET} errorMessage={'Please select your diet'}/>
             </QuestionContainer>
+            <QuestionContainer>
+                <SingleChoiseQuestion title={'4). How Often Shower'} value={formData.how_often_shower}
+                                      isError={formDataError.how_often_shower_error} onChangeValue={showerChangeHandler}
+                                      options={SHOWER} errorMessage={'Please select your how often shower'}/>
+            </QuestionContainer>
+            <QuestionContainer>
+                <SingleChoiseQuestion title={'5). Heating Energy Source'} value={formData.heating_energy_source}
+                                      isError={formDataError.heating_energy_source_error} onChangeValue={heatingChangeHandler}
+                                      options={HEATING} errorMessage={'Please select your heating energy source'}/>
+            </QuestionContainer>
+            <QuestionContainer>
+                <SingleChoiseQuestion title={'6). Transport Mode'} value={formData.transport}
+                                      isError={formDataError.transport_error} onChangeValue={transportChangeHandler}
+                                      options={TRANSPORT} errorMessage={'Please select your transport mode'}/>
+            </QuestionContainer>
+
         </div>
     )
 }
