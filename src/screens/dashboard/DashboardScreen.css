@@ -1,0 +1,61 @@
+.dashboard-screen {
+    background-image: url("/src/assets/images/background/trees-background-1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+}
+
+.dashboard-screen-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(152, 251, 152, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.dashboard-screen-header-title {
+    font-family: 'Montserrat', serif;
+    font-weight: bolder;
+    font-size: 32px;
+    margin: 10px 0;
+}
+
+.dashboard-screen-header-desc {
+    font-family: 'Montserrat', serif;
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.dashboard-screen-category-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-column-gap: 10px;
+    grid-row-gap: 15px;
+    margin: 10px 60px;
+}
+
+.dashboard-screen-project-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+@media (max-width: 800px) {
+    .dashboard-screen-category-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-screen-category-container {
+        grid-template-columns: repeat(2, 1fr);
+        margin: 10px 15px;
+    }
+}

@@ -1,0 +1,20 @@
+import { PAYMENT_URL } from "../configuration";
+import { apiSlice } from "./apiSlice";
+
+const getToken = () => localStorage.getItem('token');
+
+export const paymentSlice = apiSlice.injectEndpoints({
+    endpoints: (builder) => ({
+        fetchCarbonCredits: builder.query({
+            query: () => ({
+                url: `${PAYMENT_URL}/carbon_credits`,
+                headers: {
+                    'Authorization': getToken()
+                }
+            }),
+            keepUnusedDataFor: 10
+        })
+    })
+});
+
+export const { useFetchCarbonCreditsQuery } = paymentSlice;

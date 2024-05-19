@@ -1,0 +1,77 @@
+.project-tile {
+    background: rgba(152, 251, 152, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.project-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.project-tile-image-container {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.project-tile-image {
+    width: 600px;
+    height: 300px;
+}
+
+.project-tile-info-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.project-tile-title {
+    font-family: 'Montserrat', serif;
+    font-weight: bold;
+    font-size: 22px;
+    margin: 10px 0;
+}
+
+.project-tile-sub-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.project-tile-sub-info-location {
+    font-family: 'Montserrat', serif;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.project-tile-sub-info-certification {
+    font-family: 'Montserrat', serif;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 10px 5px;
+    color: white;
+}
+
+.project-tile-sub-info-certification-container {
+    background: #FFD700;;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 700px) {
+    .project-tile-image {
+        width: 100%;
+        height: 200px;
+    }
+}
