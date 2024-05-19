@@ -29,3 +29,16 @@
     margin: 10px 0;
     color: #097969;
 }
+
+.add-category-image {
+    width: 150px;
+    height: 150px;
+    margin: 10px 0;
+}
+
+@media (max-width: 800px) {
+    .add-category-screen-container {
+        width: 90%;
+        margin: 0 20px;
+    }
+}

@@ -10,4 +10,6 @@ export const CATEGORY_URL = "/api/category";
 
 export const USER_URL = "/api/user";
 
-export const PAYMENT_URL = "/api/payment"
+export const PAYMENT_URL = "/api/payment";
+
+export const FILE_URL = "/api/file";

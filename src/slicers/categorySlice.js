@@ -13,8 +13,18 @@ export const categorySlice = apiSlice.injectEndpoints({
                 }
             }),
             keepUnusedDataFor: 10,
+        }),
+        addCategory: builder.mutation({
+            query: (data) => ({
+                url: `${CATEGORY_URL}/create`,
+                body: data,
+                method: 'POST',
+                headers: {
+                    'Authorization': getToken()
+                }
+            })
         })
     })
 })
 
-export const { useFetchCategoriesQuery } = categorySlice;
+export const { useFetchCategoriesQuery, useAddCategoryMutation } = categorySlice;
