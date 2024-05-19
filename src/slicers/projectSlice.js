@@ -22,8 +22,17 @@ export const projectSlice = apiSlice.injectEndpoints({
                 }
             }),
             keepUnusedDataFor: 10
+        }),
+        fetchSingleProject: builder.query({
+            query: (projectId) => ({
+                url: `${PROJECT_URL}/${projectId}`,
+                headers: {
+                    'Authorization': getToken()
+                }
+            }),
+            keepUnusedDataFor: 10
         })
     })
 });
 
-export const { useFetchProjectsQuery, useFetchProjectsByCategoryQuery } = projectSlice;
+export const { useFetchProjectsQuery, useFetchProjectsByCategoryQuery, useFetchSingleProjectQuery } = projectSlice;
