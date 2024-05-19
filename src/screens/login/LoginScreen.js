@@ -37,6 +37,7 @@ const LoginScreen = () => {
             try {
                 const res = await login({ email: email, password: password }).unwrap();
                 message.success(res?.message);
+                navigate('/dashboard');
             }catch (err){
                 message.error(err?.data?.message);
             }

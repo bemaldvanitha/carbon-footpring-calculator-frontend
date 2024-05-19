@@ -5,6 +5,8 @@ import HomeScreen from "./screens/home/HomeScreen";
 import QuestionaryScreen from "./screens/questionary/QuestionaryScreen";
 import LoginScreen from "./screens/login/LoginScreen";
 import SignupScreen from "./screens/signup/SignupScreen";
+import PrivateRoute from "./components/routing/PrivateRoute";
+import DashboardScreen from "./screens/dashboard/DashboardScreen";
 
 import store from "./store";
 
@@ -19,6 +21,9 @@ function App() {
                 <Route path={'/quiz'} element={<QuestionaryScreen/>}/>
                 <Route path={'/login'} element={<LoginScreen/>}/>
                 <Route path={'/signup'} element={<SignupScreen/>}/>
+                <Route path={''} element={<PrivateRoute/>}>
+                    <Route path={'/dashboard'} element={<DashboardScreen/>}/>
+                </Route>
             </Routes>
         </Provider>
     </div>

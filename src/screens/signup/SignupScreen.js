@@ -70,6 +70,7 @@ const SignupScreen = () => {
                     temporary_user_id: user
                 }).unwrap();
                 message.success(res?.message);
+                navigate('/dashboard');
             }catch (err){
                 message.error(err?.data?.message);
             }
