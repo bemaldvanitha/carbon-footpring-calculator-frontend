@@ -8,6 +8,8 @@ import SignupScreen from "./screens/signup/SignupScreen";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import DashboardScreen from "./screens/dashboard/DashboardScreen";
 import ProjectDetailScreen from "./screens/project/ProjectDetailScreen";
+import AdminRoute from "./components/routing/AdminRoute";
+import AddCategoryScreen from "./screens/add-category/AddCategoryScreen";
 
 import store from "./store";
 
@@ -25,6 +27,9 @@ function App() {
                 <Route path={''} element={<PrivateRoute/>}>
                     <Route path={'/dashboard'} element={<DashboardScreen/>}/>
                     <Route path={'/project/:id'} element={<ProjectDetailScreen/>}/>
+                </Route>
+                <Route path={''} element={<AdminRoute/>}>
+                    <Route path={'/add-category'} element={<AddCategoryScreen/>}/>
                 </Route>
             </Routes>
         </Provider>
