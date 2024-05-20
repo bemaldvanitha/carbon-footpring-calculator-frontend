@@ -11,6 +11,7 @@ import ProjectDetailScreen from "./screens/project/ProjectDetailScreen";
 import AdminRoute from "./components/routing/AdminRoute";
 import AddCategoryScreen from "./screens/add-category/AddCategoryScreen";
 import AddProjectScreen from "./screens/add-project/AddProjectScreen";
+import AdminCategoriesScreen from "./screens/admin-categories/AdminCategoriesScreen";
 
 import store from "./store";
 
@@ -32,6 +33,7 @@ function App() {
                 <Route path={''} element={<AdminRoute/>}>
                     <Route path={'/add-category'} element={<AddCategoryScreen/>}/>
                     <Route path={'/add-project'} element={<AddProjectScreen/>}/>
+                    <Route path={'/admin-categories'} element={<AdminCategoriesScreen/>}/>
                 </Route>
             </Routes>
         </Provider>

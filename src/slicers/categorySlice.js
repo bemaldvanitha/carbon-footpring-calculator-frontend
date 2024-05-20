@@ -23,8 +23,17 @@ export const categorySlice = apiSlice.injectEndpoints({
                     'Authorization': getToken()
                 }
             })
+        }),
+        deleteCategory: builder.mutation({
+            query: (categoryId) => ({
+                url: `${CATEGORY_URL}/${categoryId}`,
+                method: 'DELETE',
+                headers: {
+                    'Authorization': getToken()
+                }
+            })
         })
     })
 })
 
-export const { useFetchCategoriesQuery, useAddCategoryMutation } = categorySlice;
+export const { useFetchCategoriesQuery, useAddCategoryMutation, useDeleteCategoryMutation } = categorySlice;

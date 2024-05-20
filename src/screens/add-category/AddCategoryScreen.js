@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from "axios";
+import { useNavigate } from "react-router";
 import { message } from "antd";
 
 import CustomInput from "../../components/common/CustomInput";
@@ -11,6 +12,7 @@ import { useAddCategoryMutation } from "../../slicers/categorySlice";
 import './AddCategoryScreen.css';
 
 const AddCategoryScreen = () => {
+    const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [image, setImage] = useState(null);
     const [titleError, setTitleError] = useState(false);
@@ -68,6 +70,7 @@ const AddCategoryScreen = () => {
                     image: newFileName
                 }).unwrap();
                 message.success(res?.message);
+                navigate('/admin-categories')
             }catch (err){
                 message.error(err?.data?.message);
             }
