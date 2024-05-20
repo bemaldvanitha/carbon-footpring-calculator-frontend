@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import axios from "axios";
+import { message } from "antd";
 
 import CustomInput from "../../components/common/CustomInput";
 import CustomFileSelect from "../../components/common/CustomFileSelect";
 import CustomSelect from "../../components/common/CustomSelect";
 import CustomTextArea from "../../components/common/CustomTextArea";
+import CustomButton from "../../components/common/CustomButton";
 import { useFetchCategoriesQuery } from "../../slicers/categorySlice";
+import { useGeneratePresignedUrlMutation } from "../../slicers/fileSlice";
+import { useCreateProjectMutation } from "../../slicers/projectSlice";
 
 import './AddProjectScreen.css';
-import CustomButton from "../../components/common/CustomButton";
 
 const certificationTypes = [
     { id: 1, title: 'Platinum Certification' },
@@ -88,6 +92,8 @@ const AddProjectScreen = () => {
     });
 
     const { data: categoryData, isLoading: categoryIsLoading, error: categoryError } = useFetchCategoriesQuery();
+    const [generatePresignedUrl, { isLoading }] = useGeneratePresignedUrlMutation();
+    const [createProject, { isLoading: createProjectLoading }] = useCreateProjectMutation();
 
     useEffect(() => {
         if (categoryData?.data) {
@@ -266,6 +272,69 @@ const AddProjectScreen = () => {
         handleChange('credit_validator', credit_validator);
     }
 
+    const featuredImgUploadHandler = async () => {
+        const uploadImage = formData.featured_image.name;
+
+        const data = await generatePresignedUrl({
+            file_name: uploadImage,
+            file_extension: uploadImage.split('.').pop(),
+            path: "project/images"
+        }).unwrap();
+
+        await axios.put(data.pre_signed_url, formData.featured_image, {
+            headers: {
+                "Content-Type": uploadImage.split('.').pop() || "application/octet-stream",
+            },
+        });
+        return data.new_file_name;
+    }
+
+    const projectImgsUploadHandler = async () => {
+        let allProjectImages = [];
+
+        for(let uploadImageObj of formData.project_images){
+            const uploadImage = uploadImageObj.name;
+
+            const data = await generatePresignedUrl({
+                file_name: uploadImage,
+                file_extension: uploadImage.split('.').pop(),
+                path: "project/images"
+            }).unwrap();
+
+            await axios.put(data.pre_signed_url, uploadImageObj, {
+                headers: {
+                    "Content-Type": uploadImage.split('.').pop() || "application/octet-stream",
+                },
+            });
+
+            allProjectImages.push(data.new_file_name);
+        }
+        return allProjectImages;
+    }
+
+    const projectFileUploadHandler = async () => {
+        let allProjectDocs = [];
+
+        for(let document of formData.technical_documents){
+            const uploadDocument = document.name;
+
+            const data = await generatePresignedUrl({
+                file_name: uploadDocument,
+                file_extension: uploadDocument.split('.').pop(),
+                path: "project/documents"
+            }).unwrap();
+
+            await axios.put(data.pre_signed_url, document, {
+                headers: {
+                    "Content-Type": uploadDocument.split('.').pop() || "application/octet-stream",
+                },
+            });
+
+            allProjectDocs.push(data.new_file_name);
+        }
+        return allProjectDocs;
+    }
+
     const projectCreateHandler = async () => {
         setFormDataError({ category_id_error: false, title_error: false, featured_image_error: false, summary_error: false,
             how_it_work_error: false, active_since_error: false, read_more_error: false, project_images_error: false,
@@ -307,6 +376,17 @@ const AddProjectScreen = () => {
             developerOrganizationValidity && designerNameValidity && designerOrganizationValidity && creditorNameValidity &&
             creditorOrganizationValidity) {
 
+            try {
+                const featuredImg = await featuredImgUploadHandler();
+                const projectImages = await projectImgsUploadHandler();
+                const projectDocs = await projectFileUploadHandler();
+
+                const res = await createProject({ ...formData, featured_image: featuredImg, project_images: projectImages,
+                    technical_documents: projectDocs}).unwrap();
+                message.success(res?.message);
+            }catch (err){
+                message.error(err?.data?.message);
+            }
 
         } else {
             setFormDataError({ category_id_error: !categoryValidity, title_error: !titleValidity,

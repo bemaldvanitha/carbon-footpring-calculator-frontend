@@ -31,8 +31,18 @@ export const projectSlice = apiSlice.injectEndpoints({
                 }
             }),
             keepUnusedDataFor: 10
+        }),
+        createProject: builder.mutation({
+            query: (data) => ({
+                url: `${PROJECT_URL}/create`,
+                method: 'POST',
+                body: data,
+                headers: {
+                    'Authorization': getToken()
+                }
+            })
         })
     })
 });
 
-export const { useFetchProjectsQuery, useFetchProjectsByCategoryQuery, useFetchSingleProjectQuery } = projectSlice;
+export const { useFetchProjectsQuery, useFetchProjectsByCategoryQuery, useFetchSingleProjectQuery, useCreateProjectMutation } = projectSlice;
