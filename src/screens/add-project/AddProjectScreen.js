@@ -44,6 +44,7 @@ const AddProjectScreen = () => {
     });
 
     const [featuredImageObj, setFeaturedImageObj] = useState(null);
+    const [projectImageObjs, setProjectImageObjs] = useState([]);
 
     const [formDataError, setFormDataError] = useState({
         category_id_error: false,
@@ -121,6 +122,34 @@ const AddProjectScreen = () => {
         handleChange('how_it_work', e.target.value);
     }
 
+    const projectActiveSinceHandler = (e) => {
+        handleChange('active_since', e.target.value);
+    }
+
+    const projectReadMoreChangeHandler = (e) => {
+        handleChange('read_more', e.target.value);
+    }
+
+    const projectTotalCarbonCreditChangeHandler = (e) => {
+        handleChange('total_carbon_credits', e.target.value);
+    }
+
+    const projectOffsetRateChangeHandler = (e) => {
+        handleChange('offset_rate', e.target.value);
+    }
+
+    const projectImageChangeHandler = (e) => {
+        let file = e.target.files[0];
+        if (file) {
+            handleChange('project_images', [...formData.project_images, file]);
+            const reader = new FileReader();
+            reader.onload = () => {
+                setProjectImageObjs([...projectImageObjs, reader.result]);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
     return(
         <div className={'add-project-screen'}>
             <div className={'add-project-screen-container'}>
@@ -140,6 +169,25 @@ const AddProjectScreen = () => {
                 <CustomTextArea id={'howItWork'} value={formData.how_it_work} title={'How Project work'}
                                 isError={formDataError.how_it_work_error} placeholder={'Enter how project work'}
                                 errorMessage={'Enter valid how project work'} onChangeHandle={projectHowItWorkChangeHandler}/>
+                <CustomInput type={'date'} value={formData.active_since} errorMessage={'Select project start date'}
+                             title={'Project Start date'} isError={formDataError.active_since_error} id={'activeSince'}
+                             placeholder={'Select active since date'} onChangeHandle={projectActiveSinceHandler}/>
+                <CustomInput type={'link'} value={formData.read_more} errorMessage={'Enter valid link'}
+                             title={'Project Link'} isError={formDataError.read_more_error} id={'readMore'}
+                             placeholder={'Enter read more links'} onChangeHandle={projectReadMoreChangeHandler}/>
+                <CustomInput type={'number'} value={formData.total_carbon_credits} errorMessage={'Enter valid total carbon credit amount'}
+                             title={'Total Carbon Credits'} isError={formDataError.total_carbon_credits_error} id={'totalCC'}
+                             placeholder={'Enter Total Carbon credits'} onChangeHandle={projectTotalCarbonCreditChangeHandler}/>
+                <CustomInput type={'number'} value={formData.offset_rate} errorMessage={'Enter valid offset rate'}
+                             title={'Offset Rate'} isError={formDataError.offset_rate_error} id={'offsetRate'}
+                             placeholder={'Enter offset rate'} onChangeHandle={projectOffsetRateChangeHandler}/>
+                <CustomFileSelect id={'projectImages'} title={'Project Images'} value={formData.project_images}
+                                  onChangeHandle={projectImageChangeHandler} isError={formDataError.project_images_error}
+                                  errorMessage={'Select few project images'} multiple={true}/>
+                {formData.project_images.length > 0 && <div className={'add-project-image-list'}>
+                    {projectImageObjs.map((projectImg, index) => <img src={projectImg} key={index} alt={`project-img-${index}`}
+                                                                      className={'add-project-image'}/>)}
+                </div>}
             </div>
         </div>
     )

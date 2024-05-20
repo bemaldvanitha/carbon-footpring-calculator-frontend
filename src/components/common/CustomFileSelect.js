@@ -2,13 +2,13 @@ import React from "react";
 
 import './CustomFileSelect.css';
 
-const CustomFileSelect = ({ id, isError, errorMessage, title, value, onChangeHandle }) => {
+const CustomFileSelect = ({ id, isError, errorMessage, title, value, onChangeHandle, multiple = false }) => {
     return (
         <div className={'custom-file-container'}>
             <label className={'custom-file-label'} htmlFor={id}>
                 {title}
             </label>
-            <input id={id} onChange={onChangeHandle} type={'file'} className={'custom-file-input'} multiple={false} accept="image/*"/>
+            <input id={id} onChange={onChangeHandle} type={'file'} className={'custom-file-input'} multiple={multiple} accept="image/*"/>
             {isError && <p className={'custom-file-error'}>{errorMessage}</p>}
         </div>
     )

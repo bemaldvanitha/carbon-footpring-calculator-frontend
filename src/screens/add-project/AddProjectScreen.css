@@ -30,6 +30,14 @@
     color: #097969;
 }
 
+.add-project-image-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    grid-column-gap: 15px;
+    grid-row-gap: 10px;
+}
+
 .add-project-image {
     width: 150px;
     height: 150px;
@@ -40,5 +48,9 @@
     .add-project-screen-container {
         width: 90%;
         margin: 0 20px;
+    }
+
+    .add-project-image-list {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
