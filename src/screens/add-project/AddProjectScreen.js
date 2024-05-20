@@ -457,8 +457,6 @@ const AddProjectScreen = () => {
                         technical_documents: Array.isArray(projectDocs) ? projectDocs : []
                     };
 
-                    console.log(data);
-
                     const res = await updateProject(project_id, data).unwrap();
 
                     message.success(res?.message);
@@ -567,7 +565,8 @@ const AddProjectScreen = () => {
                              isError={formDataError.credit_validator.organization_error} id={'creditorOrganization'}
                              placeholder={'Enter project credit validator organization'}
                              onChangeHandle={projectCreditorOrganizationChangeHandler}/>}
-                <CustomButton title={'Project Create'} onClick={projectCreateHandler} fontColor={'#f0f0f0'} bgColor={'#41B06E'}/>
+                <CustomButton title={project_id === null ? 'Project Create' : 'Project Update'} onClick={projectCreateHandler}
+                              fontColor={'#f0f0f0'} bgColor={'#41B06E'}/>
             </div>
         </div>
     )
