@@ -41,8 +41,18 @@ export const projectSlice = apiSlice.injectEndpoints({
                     'Authorization': getToken()
                 }
             })
+        }),
+        deleteProject: builder.mutation({
+            query: (projectId) => ({
+                url: `${PROJECT_URL}/${projectId}`,
+                method: 'DELETE',
+                headers: {
+                    'Authorization': getToken()
+                }
+            })
         })
     })
 });
 
-export const { useFetchProjectsQuery, useFetchProjectsByCategoryQuery, useFetchSingleProjectQuery, useCreateProjectMutation } = projectSlice;
+export const { useFetchProjectsQuery, useFetchProjectsByCategoryQuery, useFetchSingleProjectQuery, useCreateProjectMutation,
+    useDeleteProjectMutation } = projectSlice;

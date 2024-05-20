@@ -1,0 +1,91 @@
+.admin-project-screen {
+    background-image: url("/src/assets/images/background/background-free-3.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-project-screen-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(42, 170, 138, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 850px;
+}
+
+.admin-project-screen-title {
+    font-family: 'Montserrat', serif;
+    font-weight: bold;
+    font-size: 34px;
+    margin: 10px 0;
+    color: #097969;
+}
+
+.admin-project-screen-button-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: center;
+}
+
+.admin-project-table {
+    width: 90%;
+    margin: 5px 20px;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.admin-project-table-header {
+    font-family: 'Montserrat', serif;
+    font-weight: bold;
+    font-size: 28px;
+    margin: 10px 0;
+    text-align: left;
+}
+
+.admin-project-table-data {
+    font-family: 'Montserrat', serif;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.admin-project-table-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.admin-project-table-icon {
+    font-size: 36px;
+    cursor: pointer;
+}
+
+.icon-delete {
+    color: #C40C0C;
+}
+
+.icon-edit {
+    color: darkgoldenrod;
+}
+
+@media (max-width: 860px) {
+    .admin-project-screen-container {
+        width: 100%;
+    }
+
+    .admin-project-screen-button-container {
+        grid-template-columns: 1fr;
+    }
+
+    .no-content {
+        display: none;
+    }
+}

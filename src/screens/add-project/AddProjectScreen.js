@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { message } from "antd";
+import { useNavigate } from "react-router";
 
 import CustomInput from "../../components/common/CustomInput";
 import CustomFileSelect from "../../components/common/CustomFileSelect";
@@ -21,6 +22,7 @@ const certificationTypes = [
 ]
 
 const AddProjectScreen = () => {
+    const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const [formData, setFormData] = useState({
         category_id: 0,
@@ -384,6 +386,7 @@ const AddProjectScreen = () => {
                 const res = await createProject({ ...formData, featured_image: featuredImg, project_images: projectImages,
                     technical_documents: projectDocs}).unwrap();
                 message.success(res?.message);
+                navigate('/admin-projects');
             }catch (err){
                 message.error(err?.data?.message);
             }

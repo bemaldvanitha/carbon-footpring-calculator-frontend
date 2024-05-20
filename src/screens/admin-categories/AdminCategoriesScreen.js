@@ -85,7 +85,7 @@ const AdminCategoriesScreen = () => {
                                     <img alt={'category-img'} className={'admin-category-table-image'}
                                          src={category.presigned_url}/>
                                 </td>
-                                <td className={'admin-category-table-data'}>{category.created_at}</td>
+                                <td className={'admin-category-table-data'}>{new Date(category.created_at).toLocaleDateString()}</td>
                                 <td>
                                     <MdDelete className={'admin-category-table-icon'} onClick={() => deleteHandler(category.id)}/>
                                 </td>
