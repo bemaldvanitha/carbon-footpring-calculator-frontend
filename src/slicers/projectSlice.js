@@ -50,9 +50,19 @@ export const projectSlice = apiSlice.injectEndpoints({
                     'Authorization': getToken()
                 }
             })
+        }),
+        updateProject: builder.mutation({
+            query: (projectId, data) => ({
+                url: `${PROJECT_URL}/${projectId}`,
+                method: 'PATCH',
+                body: data,
+                headers: {
+                    'Authorization': getToken()
+                }
+            })
         })
     })
 });
 
 export const { useFetchProjectsQuery, useFetchProjectsByCategoryQuery, useFetchSingleProjectQuery, useCreateProjectMutation,
-    useDeleteProjectMutation } = projectSlice;
+    useDeleteProjectMutation, useUpdateProjectMutation } = projectSlice;

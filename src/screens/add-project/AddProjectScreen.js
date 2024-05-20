@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { message } from "antd";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 import CustomInput from "../../components/common/CustomInput";
 import CustomFileSelect from "../../components/common/CustomFileSelect";
@@ -10,7 +10,7 @@ import CustomTextArea from "../../components/common/CustomTextArea";
 import CustomButton from "../../components/common/CustomButton";
 import { useFetchCategoriesQuery } from "../../slicers/categorySlice";
 import { useGeneratePresignedUrlMutation } from "../../slicers/fileSlice";
-import { useCreateProjectMutation } from "../../slicers/projectSlice";
+import { useCreateProjectMutation, useFetchSingleProjectQuery, useUpdateProjectMutation } from "../../slicers/projectSlice";
 
 import './AddProjectScreen.css';
 
@@ -23,6 +23,10 @@ const certificationTypes = [
 
 const AddProjectScreen = () => {
     const navigate = useNavigate();
+    const { search } = useLocation();
+    const params = new URLSearchParams(search);
+    const project_id = params.get('project_id');
+
     const [categories, setCategories] = useState([]);
     const [formData, setFormData] = useState({
         category_id: 0,
@@ -59,6 +63,7 @@ const AddProjectScreen = () => {
 
     const [featuredImageObj, setFeaturedImageObj] = useState(null);
     const [projectImageObjs, setProjectImageObjs] = useState([]);
+    const [editFeaturedImage, setEditFeaturedImage] = useState('');
 
     const [formDataError, setFormDataError] = useState({
         category_id_error: false,
@@ -96,12 +101,32 @@ const AddProjectScreen = () => {
     const { data: categoryData, isLoading: categoryIsLoading, error: categoryError } = useFetchCategoriesQuery();
     const [generatePresignedUrl, { isLoading }] = useGeneratePresignedUrlMutation();
     const [createProject, { isLoading: createProjectLoading }] = useCreateProjectMutation();
+    const { data: projectData, isLoading: projectIsLoading, error: projectError } = useFetchSingleProjectQuery(project_id);
+    const [updateProject, { isLoading: updateProjectLoading }] = useUpdateProjectMutation();
 
     useEffect(() => {
         if (categoryData?.data) {
             setCategories(categoryData?.data);
         }
     }, [categoryData]);
+
+    useEffect(() => {
+        if(projectData?.data && project_id){
+            let projectD = projectData?.data;
+
+            setEditFeaturedImage(projectD?.featured_image);
+            setFormData({ category_id: 0, title: projectD?.title, featured_image: null, summary: projectD?.summary,
+                how_it_work: projectD?.how_it_work, active_since: "", read_more: projectD?.read_more, total_carbon_credits: 0,
+                offset_rate: 1, project_images: [],
+                location: { title: projectD?.location.title, description: projectD?.location.description,
+                    latitude: projectD?.location.latitude, longitude: projectD?.location.longitude },
+                technical_documents: [], certification_type: "",
+                project_developer: { name: "", organization: "" },
+                project_design_validator: { name: "", organization: "" },
+                credit_validator: { name: "", organization: "" }
+            });
+        }
+    }, [project_id, projectData]);
 
     const handleChange = (field, value) => {
         setFormData((prevData) => ({
@@ -275,6 +300,9 @@ const AddProjectScreen = () => {
     }
 
     const featuredImgUploadHandler = async () => {
+        if(formData.featured_image === null){
+            return '';
+        }
         const uploadImage = formData.featured_image.name;
 
         const data = await generatePresignedUrl({
@@ -372,37 +400,83 @@ const AddProjectScreen = () => {
         const creditorNameValidity = formData.credit_validator.name.trim().length >= 2;
         const creditorOrganizationValidity = formData.credit_validator.organization.trim().length >= 3;
 
-        if (categoryValidity && titleValidity && featuredImageValidity && summaryValidity && howWorkValidity && activeSinceValidity &&
-            readMoreValidity && projectImageValidity && carbonCreditValidity && offsetRateValidity && locationTitleValidity &&
-            locationDescriptionValidity && techDocValidity && certificationTypeValidity && developerNameValidity &&
-            developerOrganizationValidity && designerNameValidity && designerOrganizationValidity && creditorNameValidity &&
-            creditorOrganizationValidity) {
+        if(project_id === null){
+            if (categoryValidity && titleValidity && featuredImageValidity && summaryValidity && howWorkValidity && activeSinceValidity &&
+                readMoreValidity && projectImageValidity && carbonCreditValidity && offsetRateValidity && locationTitleValidity &&
+                locationDescriptionValidity && techDocValidity && certificationTypeValidity && developerNameValidity &&
+                developerOrganizationValidity && designerNameValidity && designerOrganizationValidity && creditorNameValidity &&
+                creditorOrganizationValidity) {
 
-            try {
-                const featuredImg = await featuredImgUploadHandler();
-                const projectImages = await projectImgsUploadHandler();
-                const projectDocs = await projectFileUploadHandler();
+                try {
+                    const featuredImg = await featuredImgUploadHandler();
+                    const projectImages = await projectImgsUploadHandler();
+                    const projectDocs = await projectFileUploadHandler();
 
-                const res = await createProject({ ...formData, featured_image: featuredImg, project_images: projectImages,
-                    technical_documents: projectDocs}).unwrap();
-                message.success(res?.message);
-                navigate('/admin-projects');
-            }catch (err){
-                message.error(err?.data?.message);
+                    const res = await createProject({ ...formData, featured_image: featuredImg, project_images: projectImages,
+                        technical_documents: projectDocs}).unwrap();
+                    message.success(res?.message);
+                    navigate('/admin-projects');
+                }catch (err){
+                    message.error(err?.data?.message);
+                }
+
+            } else {
+                setFormDataError({ category_id_error: !categoryValidity, title_error: !titleValidity,
+                    featured_image_error: !featuredImageValidity, summary_error: !summaryValidity, how_it_work_error: !howWorkValidity,
+                    active_since_error: !activeSinceValidity, read_more_error: !readMoreValidity, project_images_error: !projectImageValidity,
+                    total_carbon_credits_error: !carbonCreditValidity, offset_rate_error: !offsetRateValidity,
+                    location: { title_error: !locationTitleValidity, description_error: !locationDescriptionValidity, latitude_error: false,
+                        longitude_error: false},
+                    technical_documents_error: !techDocValidity, certification_type_error: !certificationTypeValidity,
+                    project_developer: { name_error: !developerNameValidity, organization_error: !developerOrganizationValidity },
+                    project_design_validator: { name_error: !designerNameValidity, organization_error: !designerOrganizationValidity },
+                    credit_validator: { name_error: !creditorNameValidity, organization_error: !creditorOrganizationValidity }
+                });
             }
+        }else {
+            if(titleValidity && summaryValidity && howWorkValidity && readMoreValidity && locationTitleValidity &&
+                locationDescriptionValidity){
+                try{
+                    const featuredImg = await featuredImgUploadHandler();
+                    const projectImages = await projectImgsUploadHandler();
+                    const projectDocs = await projectFileUploadHandler();
 
-        } else {
-            setFormDataError({ category_id_error: !categoryValidity, title_error: !titleValidity,
-                featured_image_error: !featuredImageValidity, summary_error: !summaryValidity, how_it_work_error: !howWorkValidity,
-                active_since_error: !activeSinceValidity, read_more_error: !readMoreValidity, project_images_error: !projectImageValidity,
-                total_carbon_credits_error: !carbonCreditValidity, offset_rate_error: !offsetRateValidity,
-                location: { title_error: !locationTitleValidity, description_error: !locationDescriptionValidity, latitude_error: false,
-                    longitude_error: false},
-                technical_documents_error: !techDocValidity, certification_type_error: !certificationTypeValidity,
-                project_developer: { name_error: !developerNameValidity, organization_error: !developerOrganizationValidity },
-                project_design_validator: { name_error: !designerNameValidity, organization_error: !designerOrganizationValidity },
-                credit_validator: { name_error: !creditorNameValidity, organization_error: !creditorOrganizationValidity }
-            });
+                    const data = {
+                        title: formData.title,
+                        featured_image: featuredImg,
+                        summary: formData.summary,
+                        how_it_work: formData.how_it_work,
+                        read_more: formData.read_more,
+                        project_images: Array.isArray(projectImages) ? projectImages : [],
+                        location: {
+                            title: formData.location.title,
+                            description: formData.location.description,
+                            latitude: parseFloat(formData.location.latitude),
+                            longitude: parseFloat(formData.location.longitude)
+                        },
+                        technical_documents: Array.isArray(projectDocs) ? projectDocs : []
+                    };
+
+                    console.log(data);
+
+                    const res = await updateProject(project_id, data).unwrap();
+
+                    message.success(res?.message);
+                    navigate('/admin-projects');
+                }catch (err){
+                    message.error(err?.data?.message);
+                }
+            }else {
+                setFormDataError({ category_id_error: false, title_error: !titleValidity, featured_image_error: false,
+                    summary_error: !summaryValidity, how_it_work_error: !howWorkValidity, active_since_error: false,
+                    read_more_error: !readMoreValidity, project_images_error: false, total_carbon_credits_error: false,
+                    offset_rate_error: false, location: { title_error: !locationTitleValidity, description_error:
+                            !locationDescriptionValidity, latitude_error: false, longitude_error: false}, technical_documents_error:
+                        false, certification_type_error: false, project_developer: { name_error: false, organization_error: false },
+                    project_design_validator: { name_error: false, organization_error: false }, credit_validator: { name_error: false,
+                        organization_error: false }
+                });
+            }
         }
     }
 
@@ -410,8 +484,9 @@ const AddProjectScreen = () => {
         <div className={'add-project-screen'}>
             <div className={'add-project-screen-container'}>
                 <p className={'add-project-screen-title'}>Create new Project</p>
-                <CustomSelect title={'Project Category'} value={formData.category_id} id={'category'} errorMessage={'Select a category'}
-                              isError={formDataError.category_id_error} options={categories} onChangeHandle={projectCategoryChangeHandler}/>
+                {project_id === null && <CustomSelect title={'Project Category'} value={formData.category_id} id={'category'}
+                              errorMessage={'Select a category'} isError={formDataError.category_id_error} options={categories}
+                                                      onChangeHandle={projectCategoryChangeHandler}/>}
                 <CustomInput title={'Project Title'} id={'title'} type={'text'} isError={formDataError.title_error} value={formData.title}
                              errorMessage={'Enter Valid Project title'} placeholder={'Enter Project Title'}
                              onChangeHandle={projectTitleChangeHandler}/>
@@ -425,18 +500,19 @@ const AddProjectScreen = () => {
                 <CustomTextArea id={'howItWork'} value={formData.how_it_work} title={'How Project work'}
                                 isError={formDataError.how_it_work_error} placeholder={'Enter how project work'}
                                 errorMessage={'Enter valid how project work'} onChangeHandle={projectHowItWorkChangeHandler}/>
-                <CustomInput type={'date'} value={formData.active_since} errorMessage={'Select project start date'}
+                {project_id === null && <CustomInput type={'date'} value={formData.active_since} errorMessage={'Select project start date'}
                              title={'Project Start date'} isError={formDataError.active_since_error} id={'activeSince'}
-                             placeholder={'Select active since date'} onChangeHandle={projectActiveSinceHandler}/>
+                             placeholder={'Select active since date'} onChangeHandle={projectActiveSinceHandler}/>}
                 <CustomInput type={'link'} value={formData.read_more} errorMessage={'Enter valid link'}
                              title={'Project Link'} isError={formDataError.read_more_error} id={'readMore'}
                              placeholder={'Enter read more links'} onChangeHandle={projectReadMoreChangeHandler}/>
-                <CustomInput type={'number'} value={formData.total_carbon_credits} errorMessage={'Enter valid total carbon credit amount'}
-                             title={'Total Carbon Credits'} isError={formDataError.total_carbon_credits_error} id={'totalCC'}
-                             placeholder={'Enter Total Carbon credits'} onChangeHandle={projectTotalCarbonCreditChangeHandler}/>
-                <CustomInput type={'number'} value={formData.offset_rate} errorMessage={'Enter valid offset rate'}
+                {project_id === null &&  <CustomInput type={'number'} value={formData.total_carbon_credits}
+                             errorMessage={'Enter valid total carbon credit amount'} title={'Total Carbon Credits'}
+                             isError={formDataError.total_carbon_credits_error} id={'totalCC'} placeholder={'Enter Total Carbon credits'}
+                             onChangeHandle={projectTotalCarbonCreditChangeHandler}/>}
+                {project_id === null && <CustomInput type={'number'} value={formData.offset_rate} errorMessage={'Enter valid offset rate'}
                              title={'Offset Rate'} isError={formDataError.offset_rate_error} id={'offsetRate'}
-                             placeholder={'Enter offset rate'} onChangeHandle={projectOffsetRateChangeHandler}/>
+                             placeholder={'Enter offset rate'} onChangeHandle={projectOffsetRateChangeHandler}/>}
                 <CustomFileSelect id={'projectImages'} title={'Project Images'} value={formData.project_images}
                                   onChangeHandle={projectImageChangeHandler} isError={formDataError.project_images_error}
                                   errorMessage={'Select few project images'} multiple={true}/>
@@ -461,33 +537,36 @@ const AddProjectScreen = () => {
                 <CustomFileSelect id={'technicalDocuments'} title={'Technical Documents'} value={formData.technical_documents}
                                   onChangeHandle={projectTechnicalDocChangeHandler} isError={formDataError.technical_documents_error}
                                   errorMessage={'Select few technical documents'} multiple={true} acceptType={'application/pdf'}/>
-                <CustomSelect title={'Project Certification Type'} value={formData.certification_type} id={'certificationType'}
-                              errorMessage={'Select project certification'} isError={formDataError.certification_type_error}
-                              options={certificationTypes} onChangeHandle={projectCertificationTypeChangeHandler}/>
-                <CustomInput type={'text'} value={formData.project_developer.name} errorMessage={'Enter valid developer name'}
-                             title={'Project Developer name'} isError={formDataError.project_developer.name_error} id={'developerName'}
-                             placeholder={'Enter project developer name'} onChangeHandle={projectDeveloperNameChangeHandler}/>
-                <CustomInput type={'text'} value={formData.project_developer.organization} errorMessage={'Enter valid developer organization'}
-                             title={'Project Developer organization'} isError={formDataError.project_developer.organization_error}
-                             id={'developerOrganization'} placeholder={'Enter project developer organization'}
-                             onChangeHandle={projectDeveloperOrganizationChangeHandler}/>
-                <CustomInput type={'text'} value={formData.project_design_validator.name} errorMessage={'Enter valid designer name'}
-                             title={'Project Designer name'} isError={formDataError.project_design_validator.name_error} id={'designerName'}
-                             placeholder={'Enter project designer name'} onChangeHandle={projectDesignerNameChangeHandler}/>
-                <CustomInput type={'text'} value={formData.project_design_validator.organization} errorMessage={'Enter valid designer organization'}
-                             title={'Project Designer organization'} isError={formDataError.project_design_validator.organization_error}
-                             id={'designerOrganization'} placeholder={'Enter project designer organization'}
-                             onChangeHandle={projectDesignerOrganizationChangeHandler}/>
-
-                <CustomInput type={'text'} value={formData.credit_validator.name} errorMessage={'Enter valid credit validator name'}
-                             title={'Project Credit Validator name'} isError={formDataError.credit_validator.name_error} id={'creditorName'}
-                             placeholder={'Enter project credit validator name'} onChangeHandle={projectCreditorNameChangeHandler}/>
-
-                <CustomInput type={'text'} value={formData.credit_validator.organization}
+                {project_id === null && <CustomSelect title={'Project Certification Type'} value={formData.certification_type}
+                              id={'certificationType'} errorMessage={'Select project certification'}
+                              isError={formDataError.certification_type_error} options={certificationTypes}
+                              onChangeHandle={projectCertificationTypeChangeHandler}/>}
+                {project_id === null && <CustomInput type={'text'} value={formData.project_developer.name}
+                             errorMessage={'Enter valid developer name'} title={'Project Developer name'}
+                             isError={formDataError.project_developer.name_error} id={'developerName'}
+                             placeholder={'Enter project developer name'} onChangeHandle={projectDeveloperNameChangeHandler}/>}
+                {project_id === null && <CustomInput type={'text'} value={formData.project_developer.organization}
+                             errorMessage={'Enter valid developer organization'} title={'Project Developer organization'}
+                             isError={formDataError.project_developer.organization_error} id={'developerOrganization'}
+                             placeholder={'Enter project developer organization'}
+                             onChangeHandle={projectDeveloperOrganizationChangeHandler}/>}
+                {project_id === null && <CustomInput type={'text'} value={formData.project_design_validator.name}
+                             errorMessage={'Enter valid designer name'} title={'Project Designer name'}
+                             isError={formDataError.project_design_validator.name_error} id={'designerName'}
+                             placeholder={'Enter project designer name'} onChangeHandle={projectDesignerNameChangeHandler}/>}
+                {project_id === null && <CustomInput type={'text'} value={formData.project_design_validator.organization}
+                             errorMessage={'Enter valid designer organization'} title={'Project Designer organization'}
+                             isError={formDataError.project_design_validator.organization_error} id={'designerOrganization'}
+                             placeholder={'Enter project designer organization'} onChangeHandle={projectDesignerOrganizationChangeHandler}/>}
+                {project_id === null && <CustomInput type={'text'} value={formData.credit_validator.name}
+                             errorMessage={'Enter valid credit validator name'} title={'Project Credit Validator name'}
+                             isError={formDataError.credit_validator.name_error} id={'creditorName'}
+                             placeholder={'Enter project credit validator name'} onChangeHandle={projectCreditorNameChangeHandler}/>}
+                {project_id === null && <CustomInput type={'text'} value={formData.credit_validator.organization}
                              errorMessage={'Enter valid credit validator organization'} title={'Project Credit Validator organization'}
                              isError={formDataError.credit_validator.organization_error} id={'creditorOrganization'}
                              placeholder={'Enter project credit validator organization'}
-                             onChangeHandle={projectCreditorOrganizationChangeHandler}/>
+                             onChangeHandle={projectCreditorOrganizationChangeHandler}/>}
                 <CustomButton title={'Project Create'} onClick={projectCreateHandler} fontColor={'#f0f0f0'} bgColor={'#41B06E'}/>
             </div>
         </div>
