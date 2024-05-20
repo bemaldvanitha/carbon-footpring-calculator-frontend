@@ -131,11 +131,11 @@ const AddProjectScreen = () => {
     }
 
     const projectTotalCarbonCreditChangeHandler = (e) => {
-        handleChange('total_carbon_credits', e.target.value);
+        handleChange('total_carbon_credits', parseInt(e.target.value));
     }
 
     const projectOffsetRateChangeHandler = (e) => {
-        handleChange('offset_rate', e.target.value);
+        handleChange('offset_rate', parseFloat(e.target.value));
     }
 
     const projectImageChangeHandler = (e) => {
@@ -149,6 +149,54 @@ const AddProjectScreen = () => {
             reader.readAsDataURL(file);
         }
     }
+
+    const projectLocationTitleChangeHandler = (e) => {
+        let location= {
+            title: e.target.value,
+            description: formData.location.description,
+            latitude: formData.location.latitude,
+            longitude: formData.location.longitude
+        };
+        handleChange('location', location);
+    }
+
+    const projectLocationDescriptionChangeHandler = (e) => {
+        let location= {
+            title: formData.location.title,
+            description: e.target.value,
+            latitude: formData.location.latitude,
+            longitude: formData.location.longitude
+        };
+        handleChange('location', location);
+    }
+
+    const projectLatitudeChangeHandler = (e) => {
+        let location= {
+            title: formData.location.title,
+            description: formData.location.description,
+            latitude: parseFloat(e.target.value),
+            longitude: formData.location.longitude
+        };
+        handleChange('location', location);
+    }
+
+    const projectLongitudeChangeHandler = (e) => {
+        let location= {
+            title: formData.location.title,
+            description: formData.location.description,
+            latitude: formData.location.latitude,
+            longitude: parseFloat(e.target.value)
+        };
+        handleChange('location', location);
+    }
+
+    const mapImageUrl = (latitude, longitude) => {
+        const apiKey = 'AIzaSyBRibDiA4Da-Xx_aNQdj7x9wVDjfm9QNik';
+        const zoom = 15;
+        const size = '400x300';
+        const markers = `markers=color:red|label:A|${latitude},${longitude}`;
+        return `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=${zoom}&size=${size}&${markers}&key=${apiKey}`;
+    };
 
     return(
         <div className={'add-project-screen'}>
@@ -188,6 +236,21 @@ const AddProjectScreen = () => {
                     {projectImageObjs.map((projectImg, index) => <img src={projectImg} key={index} alt={`project-img-${index}`}
                                                                       className={'add-project-image'}/>)}
                 </div>}
+                <CustomInput type={'text'} value={formData.location.title} errorMessage={'Enter valid location title'}
+                             title={'Location Title'} isError={formDataError.location.title_error} id={'locationTitle'}
+                             placeholder={'Enter location title'} onChangeHandle={projectLocationTitleChangeHandler}/>
+                <CustomTextArea id={'locationDescription'} value={formData.location.description} title={'Location Description'}
+                                isError={formDataError.location.description_error} placeholder={'Enter location description'}
+                                errorMessage={'Enter valid location description'} onChangeHandle={projectLocationDescriptionChangeHandler}/>
+                <CustomInput type={'number'} value={formData.location.latitude} errorMessage={'Enter valid location latitude'}
+                             title={'Location Latitude'} isError={formDataError.location.latitude_error} id={'locationLatitude'}
+                             placeholder={'Enter location latitude'} onChangeHandle={projectLatitudeChangeHandler}/>
+                <CustomInput type={'number'} value={formData.location.longitude} errorMessage={'Enter valid location longitude'}
+                             title={'Location Longitude'} isError={formDataError.location.longitude_error} id={'locationLongitude'}
+                             placeholder={'Enter location longitude'} onChangeHandle={projectLongitudeChangeHandler}/>
+                <img src={mapImageUrl(formData.location.latitude, formData.location.longitude)}
+                                                          alt={'map-img'} className={'project-map-image'}/>
+
             </div>
         </div>
     )

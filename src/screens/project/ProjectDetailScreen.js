@@ -14,13 +14,11 @@ const ProjectDetailScreen = () => {
     const { data: projectData, isLoading: projectIsLoading, error: projectError } = useFetchSingleProjectQuery(id);
 
     const mapImageUrl = (latitude, longitude) => {
-        //let latitude = project?.location?.latitude;
-        //let longitude = project?.location?.longitude;
         const apiKey = 'AIzaSyBRibDiA4Da-Xx_aNQdj7x9wVDjfm9QNik';
         const zoom = 15;
         const size = '400x300';
         const markers = `markers=color:red|label:A|${latitude},${longitude}`;
-        return `https://maps.googleapis.com/maps/api/staticmap?center=${5.9496},${80.5469}&zoom=${zoom}&size=${size}&${markers}&key=${apiKey}`;
+        return `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=${zoom}&size=${size}&${markers}&key=${apiKey}`;
     };
 
     useEffect(() => {
