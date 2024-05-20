@@ -7,6 +7,14 @@ import CustomTextArea from "../../components/common/CustomTextArea";
 import { useFetchCategoriesQuery } from "../../slicers/categorySlice";
 
 import './AddProjectScreen.css';
+import CustomButton from "../../components/common/CustomButton";
+
+const certificationTypes = [
+    { id: 1, title: 'Platinum Certification' },
+    { id: 2, title: 'Gold Certification' },
+    { id: 3, title: 'Silver Certification' },
+    { id: 4, title: 'Bronze Certification' },
+]
 
 const AddProjectScreen = () => {
     const [categories, setCategories] = useState([]);
@@ -198,6 +206,70 @@ const AddProjectScreen = () => {
         return `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=${zoom}&size=${size}&${markers}&key=${apiKey}`;
     };
 
+    const projectTechnicalDocChangeHandler = (e) => {
+        let file = e.target.files[0];
+        if (file) {
+            handleChange('technical_documents', [...formData.technical_documents, file]);
+        }
+    }
+
+    const projectCertificationTypeChangeHandler = (e) => {
+        const certificationTypeText = certificationTypes.find(certi => certi.id === parseInt(e.target.value)).title;
+        handleChange('certification_type', certificationTypeText);
+    }
+
+    const projectDeveloperNameChangeHandler = (e) => {
+        let project_developer =  {
+            name: e.target.value,
+            organization: formData.project_developer.organization
+        };
+        handleChange('project_developer', project_developer);
+    }
+
+    const projectDeveloperOrganizationChangeHandler = (e) => {
+        let project_developer =  {
+            name: formData.project_developer.name,
+            organization: e.target.value
+        };
+        handleChange('project_developer', project_developer);
+    }
+
+    const projectDesignerNameChangeHandler = (e) => {
+        let project_design_validator= {
+            name: e.target.value,
+            organization: formData.project_design_validator.organization
+        };
+        handleChange('project_design_validator', project_design_validator);
+    }
+
+    const projectDesignerOrganizationChangeHandler = (e) => {
+        let project_design_validator= {
+            name: formData.project_design_validator.name,
+            organization: e.target.value
+        };
+        handleChange('project_design_validator', project_design_validator);
+    }
+
+    const projectCreditorNameChangeHandler = (e) => {
+        let credit_validator= {
+            name: e.target.value,
+            organization: formData.credit_validator.organization
+        };
+        handleChange('credit_validator', credit_validator);
+    }
+
+    const projectCreditorOrganizationChangeHandler = (e) => {
+        let credit_validator= {
+            name: formData.credit_validator.name,
+            organization: e.target.value
+        };
+        handleChange('credit_validator', credit_validator);
+    }
+
+    const projectCreateHandler = async () => {
+
+    }
+
     return(
         <div className={'add-project-screen'}>
             <div className={'add-project-screen-container'}>
@@ -250,7 +322,37 @@ const AddProjectScreen = () => {
                              placeholder={'Enter location longitude'} onChangeHandle={projectLongitudeChangeHandler}/>
                 <img src={mapImageUrl(formData.location.latitude, formData.location.longitude)}
                                                           alt={'map-img'} className={'project-map-image'}/>
+                <CustomFileSelect id={'technicalDocuments'} title={'Technical Documents'} value={formData.technical_documents}
+                                  onChangeHandle={projectTechnicalDocChangeHandler} isError={formDataError.technical_documents_error}
+                                  errorMessage={'Select few technical documents'} multiple={true} acceptType={'application/pdf'}/>
+                <CustomSelect title={'Project Certification Type'} value={formData.certification_type} id={'certificationType'}
+                              errorMessage={'Select project certification'} isError={formDataError.certification_type_error}
+                              options={certificationTypes} onChangeHandle={projectCertificationTypeChangeHandler}/>
+                <CustomInput type={'text'} value={formData.project_developer.name} errorMessage={'Enter valid developer name'}
+                             title={'Project Developer name'} isError={formDataError.project_developer.name_error} id={'developerName'}
+                             placeholder={'Enter project developer name'} onChangeHandle={projectDeveloperNameChangeHandler}/>
+                <CustomInput type={'text'} value={formData.project_developer.organization} errorMessage={'Enter valid developer organization'}
+                             title={'Project Developer organization'} isError={formDataError.project_developer.organization_error}
+                             id={'developerOrganization'} placeholder={'Enter project developer organization'}
+                             onChangeHandle={projectDeveloperOrganizationChangeHandler}/>
+                <CustomInput type={'text'} value={formData.project_design_validator.name} errorMessage={'Enter valid designer name'}
+                             title={'Project Designer name'} isError={formDataError.project_design_validator.name_error} id={'designerName'}
+                             placeholder={'Enter project designer name'} onChangeHandle={projectDesignerNameChangeHandler}/>
+                <CustomInput type={'text'} value={formData.project_design_validator.organization} errorMessage={'Enter valid designer organization'}
+                             title={'Project Designer organization'} isError={formDataError.project_design_validator.organization_error}
+                             id={'designerOrganization'} placeholder={'Enter project designer organization'}
+                             onChangeHandle={projectDesignerOrganizationChangeHandler}/>
 
+                <CustomInput type={'text'} value={formData.credit_validator.name} errorMessage={'Enter valid credit validator name'}
+                             title={'Project Credit Validator name'} isError={formDataError.credit_validator.name_error} id={'creditorName'}
+                             placeholder={'Enter project credit validator name'} onChangeHandle={projectCreditorNameChangeHandler}/>
+
+                <CustomInput type={'text'} value={formData.credit_validator.organization}
+                             errorMessage={'Enter valid credit validator organization'} title={'Project Credit Validator organization'}
+                             isError={formDataError.credit_validator.organization_error} id={'creditorOrganization'}
+                             placeholder={'Enter project credit validator organization'}
+                             onChangeHandle={projectCreditorOrganizationChangeHandler}/>
+                <CustomButton title={'Project Create'} onClick={projectCreateHandler} fontColor={'#f0f0f0'} bgColor={'#41B06E'}/>
             </div>
         </div>
     )
