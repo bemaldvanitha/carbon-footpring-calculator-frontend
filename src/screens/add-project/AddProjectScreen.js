@@ -267,7 +267,60 @@ const AddProjectScreen = () => {
     }
 
     const projectCreateHandler = async () => {
+        setFormDataError({ category_id_error: false, title_error: false, featured_image_error: false, summary_error: false,
+            how_it_work_error: false, active_since_error: false, read_more_error: false, project_images_error: false,
+            total_carbon_credits_error: false, offset_rate_error: false,
+            location: { title_error: false, description_error: false, latitude_error: false, longitude_error: false },
+            technical_documents_error: false, certification_type_error: false,
+            project_developer: { name_error: false, organization_error: false },
+            project_design_validator: { name_error: false, organization_error: false },
+            credit_validator: { name_error: false, organization_error: false }
+        });
 
+        const date = new Date(formData.active_since);
+
+        const categoryValidity = formData.category_id !== 0;
+        const titleValidity = formData.title.trim().length > 3;
+        const featuredImageValidity = formData.featured_image !== null;
+        const summaryValidity = formData.summary.trim().length >= 10;
+        const howWorkValidity = formData.how_it_work.trim().length >= 10;
+        const activeSinceValidity =  formData.active_since.match(/^\d{4}-\d{2}-\d{2}$/) && date instanceof Date &&
+            !isNaN(date);
+        const readMoreValidity = formData.read_more.trim().length >= 3;
+        const projectImageValidity = formData.project_images.length >= 1;
+        const carbonCreditValidity = formData.total_carbon_credits > 0;
+        const offsetRateValidity = formData.offset_rate > 0;
+        const locationTitleValidity = formData.location.title.trim().length >= 3;
+        const locationDescriptionValidity = formData.location.description.trim().length >= 10;
+        const techDocValidity = formData.technical_documents.length >= 1;
+        const certificationTypeValidity = formData.certification_type.trim() !== "";
+        const developerNameValidity = formData.project_developer.name.trim().length >= 2;
+        const developerOrganizationValidity = formData.project_developer.organization.trim().length >= 3;
+        const designerNameValidity = formData.project_design_validator.name.trim().length >= 2;
+        const designerOrganizationValidity = formData.project_design_validator.organization.trim().length >= 3;
+        const creditorNameValidity = formData.credit_validator.name.trim().length >= 2;
+        const creditorOrganizationValidity = formData.credit_validator.organization.trim().length >= 3;
+
+        if (categoryValidity && titleValidity && featuredImageValidity && summaryValidity && howWorkValidity && activeSinceValidity &&
+            readMoreValidity && projectImageValidity && carbonCreditValidity && offsetRateValidity && locationTitleValidity &&
+            locationDescriptionValidity && techDocValidity && certificationTypeValidity && developerNameValidity &&
+            developerOrganizationValidity && designerNameValidity && designerOrganizationValidity && creditorNameValidity &&
+            creditorOrganizationValidity) {
+
+
+        } else {
+            setFormDataError({ category_id_error: !categoryValidity, title_error: !titleValidity,
+                featured_image_error: !featuredImageValidity, summary_error: !summaryValidity, how_it_work_error: !howWorkValidity,
+                active_since_error: !activeSinceValidity, read_more_error: !readMoreValidity, project_images_error: !projectImageValidity,
+                total_carbon_credits_error: !carbonCreditValidity, offset_rate_error: !offsetRateValidity,
+                location: { title_error: !locationTitleValidity, description_error: !locationDescriptionValidity, latitude_error: false,
+                    longitude_error: false},
+                technical_documents_error: !techDocValidity, certification_type_error: !certificationTypeValidity,
+                project_developer: { name_error: !developerNameValidity, organization_error: !developerOrganizationValidity },
+                project_design_validator: { name_error: !designerNameValidity, organization_error: !designerOrganizationValidity },
+                credit_validator: { name_error: !creditorNameValidity, organization_error: !creditorOrganizationValidity }
+            });
+        }
     }
 
     return(
