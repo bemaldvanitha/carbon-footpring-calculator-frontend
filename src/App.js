@@ -14,6 +14,8 @@ import AddProjectScreen from "./screens/add-project/AddProjectScreen";
 import AdminCategoriesScreen from "./screens/admin-categories/AdminCategoriesScreen";
 import AdminProjectsScreen from "./screens/admin-project/AdminProjectsScreen";
 import AdminDashboardScreen from "./screens/admin-dashboard/AdminDashboardScreen";
+import ProfileScreen from "./screens/profile/ProfileScreen";
+import EditProfileScreen from "./screens/profile/EditProfileScreen";
 
 import store from "./store";
 
@@ -31,6 +33,8 @@ function App() {
                 <Route path={''} element={<PrivateRoute/>}>
                     <Route path={'/dashboard'} element={<DashboardScreen/>}/>
                     <Route path={'/project/:id'} element={<ProjectDetailScreen/>}/>
+                    <Route path={'/profile'} element={<ProfileScreen/>}/>
+                    <Route path={'/edit-profile'} element={<EditProfileScreen/>}/>
                 </Route>
                 <Route path={''} element={<AdminRoute/>}>
                     <Route path={'/add-category'} element={<AddCategoryScreen/>}/>
