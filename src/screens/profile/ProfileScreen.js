@@ -56,7 +56,7 @@ const ProfileScreen = () => {
                 </Modal>
                 <div className={'profile-screen-container'}>
                     <div className={'profile-pic-container'}>
-                        <img alt={'profile-pic'} src={`https://robohash.org/${user?.full_name}`}
+                        <img alt={'profile-pic'} src={`https://robohash.org/${decodeURIComponent(user?.full_name)}`}
                              className={'profile-pic'}/>
                     </div>
                     <div className={'profile-screen-info-container'}>
