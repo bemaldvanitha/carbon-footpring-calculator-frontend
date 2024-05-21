@@ -13,3 +13,5 @@ export const USER_URL = "/api/user";
 export const PAYMENT_URL = "/api/payment";
 
 export const FILE_URL = "/api/file";
+
+export const ADMIN_URL = "/api/admin"
