@@ -37,7 +37,6 @@ const LoginScreen = () => {
             try {
                 const res = await login({ email: email, password: password }).unwrap();
                 message.success(res?.message);
-                console.log(res);
                 if(res?.user_type === 'Admin'){
                     navigate('/admin-dashboard')
                 }else{
