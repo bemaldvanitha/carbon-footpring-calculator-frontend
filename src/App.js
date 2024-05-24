@@ -1,5 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { Provider } from "react-redux";
+import {Elements} from "@stripe/react-stripe-js";
+import {loadStripe} from "@stripe/stripe-js";
 
 import HomeScreen from "./screens/home/HomeScreen";
 import QuestionaryScreen from "./screens/questionary/QuestionaryScreen";
@@ -16,15 +18,19 @@ import AdminProjectsScreen from "./screens/admin-project/AdminProjectsScreen";
 import AdminDashboardScreen from "./screens/admin-dashboard/AdminDashboardScreen";
 import ProfileScreen from "./screens/profile/ProfileScreen";
 import EditProfileScreen from "./screens/profile/EditProfileScreen";
+import PaymentScreen from "./screens/payment/PaymentScreen";
 
 import store from "./store";
 
 import './App.css';
 
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+
 function App() {
   return (
     <div className="App">
         <Provider store={store}>
+            <Elements stripe={stripePromise}>
             <Routes>
                 <Route path={'/'} element={<HomeScreen/>}/>
                 <Route path={'/quiz'} element={<QuestionaryScreen/>}/>
@@ -35,6 +41,7 @@ function App() {
                     <Route path={'/project/:id'} element={<ProjectDetailScreen/>}/>
                     <Route path={'/profile'} element={<ProfileScreen/>}/>
                     <Route path={'/edit-profile'} element={<EditProfileScreen/>}/>
+                    <Route path={'/payment/:id'} element={<PaymentScreen/>}/>
                 </Route>
                 <Route path={''} element={<AdminRoute/>}>
                     <Route path={'/add-category'} element={<AddCategoryScreen/>}/>
@@ -44,6 +51,7 @@ function App() {
                     <Route path={'/admin-dashboard'} element={<AdminDashboardScreen/>}/>
                 </Route>
             </Routes>
+            </Elements>
         </Provider>
     </div>
   );

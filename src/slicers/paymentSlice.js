@@ -13,8 +13,18 @@ export const paymentSlice = apiSlice.injectEndpoints({
                 }
             }),
             keepUnusedDataFor: 10
+        }),
+        payAmount: builder.mutation({
+            query: (data) => ({
+                url: PAYMENT_URL,
+                body: data,
+                method: 'POST',
+                headers: {
+                    'Authorization': getToken()
+                }
+            })
         })
     })
 });
 
-export const { useFetchCarbonCreditsQuery } = paymentSlice;
+export const { useFetchCarbonCreditsQuery, usePayAmountMutation } = paymentSlice;

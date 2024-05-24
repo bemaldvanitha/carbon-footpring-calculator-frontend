@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router";
-import { Spin } from "antd";
+import { useParams, useNavigate } from "react-router";
+import { Spin, FloatButton } from "antd";
+import { DollarOutlined } from '@ant-design/icons'
 
 import { useFetchSingleProjectQuery } from "../../slicers/projectSlice";
 
@@ -8,13 +9,14 @@ import './ProjectDetailScreen.css';
 
 const ProjectDetailScreen = () => {
     const id = useParams().id;
+    const navigate = useNavigate();
     const [project, setProject] = useState({});
     const [mapImage, setMapImage] = useState('');
 
     const { data: projectData, isLoading: projectIsLoading, error: projectError } = useFetchSingleProjectQuery(id);
 
     const mapImageUrl = (latitude, longitude) => {
-        const apiKey = 'AIzaSyBRibDiA4Da-Xx_aNQdj7x9wVDjfm9QNik';
+        const apiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
         const zoom = 15;
         const size = '400x300';
         const markers = `markers=color:red|label:A|${latitude},${longitude}`;
@@ -25,6 +27,10 @@ const ProjectDetailScreen = () => {
         setProject(projectData?.data);
     }, [projectData]);
 
+    const fundingNavigateHandler = () => {
+        navigate(`/payment/${id}`);
+    }
+
     if(projectIsLoading){
         return <div className={'loading-container'}>
             <Spin size="large" />
@@ -32,6 +38,8 @@ const ProjectDetailScreen = () => {
     }else {
         return(
             <div className={'project-detail-screen'}>
+                <FloatButton onClick={fundingNavigateHandler} icon={<DollarOutlined />} type={'primary'}
+                             tooltip={<div>Fund this project</div>}/>
                 <div style={{backgroundImage: `url(${project?.featured_image})`}}
                      className={'project-detail-screen-image-container'}>
                     <div>

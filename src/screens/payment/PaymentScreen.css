@@ -1,0 +1,48 @@
+.payment-screen {
+    background-image: url("/src/assets/images/background/payment-screen-background-1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.payment-screen-container {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 219, 92, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 800px;
+}
+
+.payment-screen-header {
+    font-family: 'Montserrat', serif;
+    font-weight: bold;
+    font-size: 34px;
+    margin: 10px 0;
+    text-align: center;
+    color: #FFC94A;
+}
+
+.payment-screen-description {
+    font-family: 'Montserrat', serif;
+    font-size: 16px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.payment-screen-pay-container {
+    margin: 10px 0;
+}
+
+.payment-screen-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
+}
