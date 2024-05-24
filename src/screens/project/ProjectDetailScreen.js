@@ -11,7 +11,6 @@ const ProjectDetailScreen = () => {
     const id = useParams().id;
     const navigate = useNavigate();
     const [project, setProject] = useState({});
-    const [mapImage, setMapImage] = useState('');
 
     const { data: projectData, isLoading: projectIsLoading, error: projectError } = useFetchSingleProjectQuery(id);
 
@@ -58,8 +57,9 @@ const ProjectDetailScreen = () => {
                 <div className={'project-detail-screen-detail-box'}>
                     <p className={'project-detail-screen-detail-box-title'}>Project Images</p>
                     <div className={'project-detail-screen-detail-image-box'}>
-                        {project?.project_images.map((image, index) => <img key={index} alt={index} src={image}
-                                                                            className={'project-detail-screen-detail-image'}/>)}
+                        {project?.project_images && project?.project_images.length > 0 && project?.project_images
+                            .map((image, index) => <img key={index} alt={index} src={image}
+                                                        className={'project-detail-screen-detail-image'}/>)}
                     </div>
                 </div>
                 <div className={'project-detail-screen-detail-box'}>
@@ -107,7 +107,8 @@ const ProjectDetailScreen = () => {
                 <div className={'project-detail-screen-info-box'}>
                     <p className={'project-detail-screen-info-box-title'}>Technical documents</p>
                     <p className={'project-detail-screen-info-box-desc'}>
-                        {project?.technical_documents.map((document, index) => <span key={index} className={'project-detail-document-box'}>
+                        {project?.technical_documents && project?.technical_documents.length > 0 && project?.technical_documents
+                            .map((document, index) => <span key={index} className={'project-detail-document-box'}>
                         <a href={document} download={document} target="_blank">
                             Document {index + 1}
                         </a>

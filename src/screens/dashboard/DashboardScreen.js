@@ -69,13 +69,13 @@ const DashboardScreen = () => {
                             your carbon footprint`}</p>
                 </div>
                 <div className={'dashboard-screen-category-container'}>
-                    {categories.map((category, index) => <CategoryTile key={index} id={category?.id} title={category?.title}
-                                                                       image={category?.presigned_url} onClick={categoryClickHandler}/>)}
+                    {categories && categories.map((category, index) => <CategoryTile key={index} id={category?.id}
+                                        title={category?.title} image={category?.presigned_url} onClick={categoryClickHandler}/>)}
                 </div>
                 <div className={'dashboard-screen-project-container'}>
-                    {projects.map((project, index) => <ProjectTile key={index} id={project?.id} title={project?.title}
-                                                                   image={project?.image} certification_type={project?.certification_type}
-                                                                   location={project?.location} onClickHandler={projectClickHandler}/>)}
+                    {projects && projects.map((project, index) => <ProjectTile key={index} id={project?.id} title={project?.title}
+                                        image={project?.image} certification_type={project?.certification_type} location={project?.location}
+                                        onClickHandler={projectClickHandler}/>)}
                 </div>
             </div>
         )
