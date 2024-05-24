@@ -1,0 +1,89 @@
+.nav-bar {
+    background-color: #353935;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.nav-bar-header-container {
+    margin: 0 25px;
+}
+
+.nav-bar-header {
+    font-family: 'Montserrat', serif;
+    font-weight: bold;
+    font-size: 26px;
+    margin: 10px 0;
+    color: #f0f0f0;
+    cursor: pointer;
+}
+
+.nav-bar-action-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 25px;
+    width: 400px;
+}
+
+.nav-bar-profile-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+}
+
+.nav-bar-profile-name {
+    font-family: 'Montserrat', serif;
+    font-size: 20px;
+    margin: 10px;
+    color: #f0f0f0;
+}
+
+.nav-bar-profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #f0f0f0;
+}
+
+.nav-bar-logout {
+    font-family: 'Montserrat', serif;
+    font-size: 20px;
+    margin: 10px;
+    color: #f0f0f0;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media (max-width: 500px) {
+    .nav-bar-header-container{
+        margin: 0 10px;
+    }
+
+    .nav-bar-header {
+        font-size: 24px;
+    }
+
+    .nav-bar-action-container {
+        margin: 0 10px;
+        width: 100%;
+    }
+
+    .nav-bar-profile-name {
+        font-size: 14px;
+        margin: 10px 5px;
+    }
+
+    .nav-bar-logout {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+
+    .nav-bar-profile-image {
+        width: 40px;
+        height: 40px;
+    }
+}

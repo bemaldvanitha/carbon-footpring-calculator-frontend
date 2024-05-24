@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Navigate } from "react-router";
 
+import Navbar from "../common/Navbar";
 import { useFetchUserQuery } from "../../slicers/userSlice";
 
 const AdminRoute = () => {
@@ -13,7 +14,10 @@ const AdminRoute = () => {
         }
     }, [userData]);
 
-    return isAdmin ? <Outlet/> : <Navigate to={"/login"}/>
+    return isAdmin ? <div>
+        <Navbar/>
+        <main><Outlet/></main>
+    </div> : <Navigate to={"/login"}/>
 }
 
 export default AdminRoute;

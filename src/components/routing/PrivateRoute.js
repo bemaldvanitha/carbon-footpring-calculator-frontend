@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Navigate } from "react-router";
 
+import Navbar from "../common/Navbar";
+
 const PrivateRoute = () => {
     const [isLogin, setIsLogin] = useState(true);
 
@@ -13,7 +15,10 @@ const PrivateRoute = () => {
         }
     }, []);
 
-    return isLogin ? <Outlet/> : <Navigate to={'/login'} replace/>
+    return isLogin ? <div>
+        <Navbar/>
+        <main><Outlet/></main>
+    </div> : <Navigate to={'/login'} replace/>
 }
 
 export default PrivateRoute;
