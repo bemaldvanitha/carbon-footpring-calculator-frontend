@@ -83,12 +83,12 @@ const PaymentScreen = () => {
                 try{
                     const res = payAmount({
                         project_id: parseInt(projectId),
-                        amount: parseFloat(amount),
+                        amount: parseFloat(amount.toString()) * 10,
                         token: {
                             id: token?.id,
                             email: userEmail
                         }
-                    });
+                    }).unwrap();
                     message.success(res?.message);
                     navigate('/dashboard');
                 }catch (err){
@@ -106,7 +106,11 @@ const PaymentScreen = () => {
             parseFloat(project?.offset_rate);
         if(projectRemainingCC > remainingNeededCC){
             let cCPerDollar = 2;
-            return (remainingNeededCC * cCPerDollar).toFixed(2);
+            let remainingNeedToPurchaseAmount = (remainingNeededCC * cCPerDollar).toFixed(2);
+            if(remainingNeedToPurchaseAmount <= 0){
+                return 0;
+            }
+            return remainingNeedToPurchaseAmount;
         }else {
             return projectRemainingCC.toFixed(2);
         }
@@ -122,7 +126,7 @@ const PaymentScreen = () => {
                 <div className={'payment-screen-container'}>
                     <p className={'payment-screen-header'}>Payment</p>
                     <p className={'payment-screen-description'}>Donate ${calculateRemainingOffsetByThisProjectDonationAmount()} to offset
-                        your carbon credits</p>
+                        your carbon emission</p>
                     <CustomInput type={'number'} id={'amount'} title={'Amount'} placeholder={'Enter amount'} isError={amountError}
                                  errorMessage={'Enter valid amount'} value={amount} onChangeHandle={amountHandler}/>
                     <div className={'payment-screen-pay-container'}>

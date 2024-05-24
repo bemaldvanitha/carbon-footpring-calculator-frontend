@@ -63,7 +63,10 @@ const DashboardScreen = () => {
             <div className={'dashboard-screen'}>
                 <div className={'dashboard-screen-header'}>
                     <p className={'dashboard-screen-header-title'}>Hi {user?.full_name}</p>
-                    <p className={'dashboard-screen-header-desc'}>Let's neutralise your {(user?.carbon_emission - user?.current_offset).toFixed(2)} Tons of carbon emission</p>
+                    <p className={'dashboard-screen-header-desc'}>
+                        {(user?.carbon_emission - user?.current_offset) > 0 ? `Let's neutralise your ${(user?.carbon_emission - 
+                            user?.current_offset).toFixed(2)} Tons of carbon emission` : `Thanks for neutralizing 
+                            your carbon footprint`}</p>
                 </div>
                 <div className={'dashboard-screen-category-container'}>
                     {categories.map((category, index) => <CategoryTile key={index} id={category?.id} title={category?.title}
