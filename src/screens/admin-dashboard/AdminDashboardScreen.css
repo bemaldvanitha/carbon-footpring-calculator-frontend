@@ -44,6 +44,13 @@
     color: white;
 }
 
+.admin-navigate-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px 0;
+}
+
 .admin-dashboard-chart-container-row-1 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

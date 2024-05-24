@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Spin, Tooltip } from "antd";
 import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, XAxis, YAxis } from "recharts";
+import { useNavigate } from "react-router";
 
+import CustomButton from "../../components/common/CustomButton";
 import { useGetFundingByUserQuery, useGetTotalFundingQuery, useGetFundingByProjectQuery, useGetFundingByCategoryQuery
     } from "../../slicers/adminSlice";
 
@@ -12,6 +14,7 @@ const PROJECT_COLORS = ['#FFAF45', '#FF8A08', '#FC4100', '#DA0C81', '#872341', '
 const USER_COLORS = ['#8884d8', '#BC7FCD', '#B51B75', '#640D6B', '#D20062', '#430A5D'];
 
 const AdminDashboardScreen = () => {
+    const navigate = useNavigate();
     const [chartWidth, setChartWidth] = useState(window.innerWidth * 0.8);
     const [totalFunding, setTotalFunding] = useState({});
     const [fundingByCategory, setFundingByCategory] = useState([]);
@@ -70,6 +73,14 @@ const AdminDashboardScreen = () => {
         }
     }, [fundingByCatData, fundingByProjectData, totalFundingData, fundingByUserData]);
 
+    const navigateToCategoriesManager = () => {
+        navigate('/admin-categories');
+    }
+
+    const navigateToProjectsManager = () => {
+        navigate('/admin-projects');
+    }
+
     if(isFundingByProjectLoading || isFundingByCatLoading || isTotalFundingLoading || isFundingByUserLoading){
         return <div className={'loading-container'}>
             <Spin size="large" />
@@ -82,6 +93,12 @@ const AdminDashboardScreen = () => {
                         <p className={'admin-dashboard-total-box-title'}>Total Funding for Projects</p>
                         <p className={'admin-dashboard-total-box-desc'}>{totalFunding?.total}$</p>
                     </div>
+                </div>
+                <div className={'admin-navigate-container'}>
+                    <CustomButton title={'Category Manager'} bgColor={'#87A922'} fontColor={'#f0f0f0'}
+                                  onClick={navigateToCategoriesManager}/>
+                    <CustomButton title={'Project Manager'} bgColor={'#00C49F'} fontColor={'#f0f0f0'}
+                                  onClick={navigateToProjectsManager}/>
                 </div>
                 <div className={'admin-dashboard-chart-container-row-1'}>
                     <div className={'admin-dashboard-chart-container'}>

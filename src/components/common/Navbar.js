@@ -27,7 +27,11 @@ const Navbar = () => {
     }
 
     const dashboardNavigateHandler = () => {
-        navigate('/dashboard');
+        if(user?.user_type === 'Admin'){
+            navigate('/admin-dashboard');
+        }else {
+            navigate('/dashboard');
+        }
     }
 
     if(userLoading){
